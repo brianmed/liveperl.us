@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script src="/jquery-1.9.1.js"></script>
+
+    <link rel="stylesheet" href="/codemirror-3.1/lib/codemirror.css">
+    <script src="/codemirror-3.1/lib/codemirror.js"></script>
+    <script src="/codemirror-3.1/mode/perl/perl.js"></script>
+    <link rel="stylesheet" href="/codemirror-3.1/doc/docs.css">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <script src="/bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+
+    [% INCLUDE navbar.html.tt %]
+
+    <h1>Perl Source: [% subtitle %]</h1>
+
+    [% IF error %]
+        <div class="alert alert-warning">[% error %]<div>
+        </body>
+        </html>
+         [% STOP %]
+    [% END %]
+
+    [% html %]
+
+  <form method=post>
+    <textarea id=code name=code class="field span12" rows=20>[% code %]</textarea>
+
+    <br>
+
+      [% IF output %]
+            <pre class="pre-scrollable">[% output | html %]</pre>
+      [% END %]
+
+      <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+
+    <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+
+    <style type="text/css">
+    body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+    }
+    </style>
+
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true
+      });
+      editor.setSize("100%", "550")
+    </script>
+</body>
+</html>
+

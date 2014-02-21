@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+
+    <script src="/jquery-1.9.1.js"></script>
+    <script src="/bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+
+    <div>
+
+    [% INCLUDE navbar.html.tt %]
+
+          <div class="row-fluid">
+            <div class="span4 offset1">
+    <h1>Enjoy your experience on LivePerl.</h1>
+    <h4>Please select a tutorial from the sections above and have fun.</h4>
+
+<p>Perl is a general-purpose programming language originally developed for text manipulation and now used for a wide range of tasks including system administration, web development, network programming, GUI development, and more.</p>
+<p>The language is intended to be practical (easy to use, efficient, complete) rather than beautiful (tiny, elegant, minimal). Its major features are that it's easy to use, supports both procedural and object-oriented (OO) programming, has powerful built-in support for text processing, and has one of the world's most impressive collections of third-party modules.</p>
+<p>Different definitions of Perl are given in perl, perlfaq1 and no doubt other places. From this we can determine that Perl is different things to different people, but that lots of people think it's at least worth writing about.</p>
+        <small><cite><a href=http://perldoc.perl.org/perlintro.html>htthttp://perldoc.perl.org/perlintro.html</a></cite></small>
+    </div>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+% my $self = shift;
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+Same old in green <%= $self->content %>
+</body>
+</html>
