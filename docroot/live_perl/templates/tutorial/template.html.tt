@@ -65,12 +65,15 @@
         </div>
         <div id=content class="box">
             Waiting for content.
+            <noscript><h1 style="color: #df0019;">This Site requires JavaScript, please enable it.</h1></noscript>
         </div>
     </div>
 
     <input type="hidden" id="the_code" name=code value="[% code | html %]">
 
     <br>&nbsp;<br>
+
+    <a class="btn" href="http://liveperl.us:[% port %]" target="liveperl">Output in new window</a>
   </form>
 
     <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
