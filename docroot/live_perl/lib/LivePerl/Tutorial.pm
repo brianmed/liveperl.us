@@ -132,7 +132,7 @@ sub _section {
         $self->stash(code => $code);
 
         my $html = sprintf($ops->{html}, $unique, $port);
-        my $output = $self->render(partial => 1, progress => 0, inline => '[% INCLUDE tutorial/template.html.tt %]', previous => $self->stash->{_previous} // 0, code => $code, html => $html, subtitle => $ops->{subtitle});
+        my $output = $self->render(port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/template.html.tt %]', previous => $self->stash->{_previous} // 0, code => $code, html => $html, subtitle => $ops->{subtitle});
         $self->write_chunk($output => sub { $self->finish });
     };
 

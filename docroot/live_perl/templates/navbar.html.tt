@@ -9,7 +9,7 @@
         <a href="/" class="brand">LivePerl</a>
         <div class="nav-collapse">
           <ul class="nav">
-            <li class="active"><a href="/tutorial/start">Start</a></li>
+            <!-- <li class="active"><a href="/tutorial/start">Start</a></li> -->
             <li class="dropdown">
               <a data-toggle="dropdown" class="dropdown-toggle" href="#">Sections <b class="caret"></b></a>
               <ul class="dropdown-menu">

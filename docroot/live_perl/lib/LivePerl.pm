@@ -22,7 +22,7 @@ sub startup {
     
     my $r = $self->routes;
     
-    $r->get('/')->to(controller => 'Index', action => 'slash');
+    $r->get('/')->to(controller => 'Tutorial', action => 'start');
 
     $r->any('/tutorial/start')->to(controller => 'Tutorial', action => 'start');
     $r->any('/tutorial/:file')->to(controller => 'Tutorial', action => 'go');

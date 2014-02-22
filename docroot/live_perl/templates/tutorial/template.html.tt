@@ -2,6 +2,10 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <meta HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <meta HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    <meta http-Equiv="Expires" Content="0">
+
     <script src="/jquery-1.9.1.js"></script>
 
     <link rel="stylesheet" href="/codemirror-3.1/lib/codemirror.css">
@@ -52,6 +56,7 @@
       [% END %]
 
       <button type="submit" class="btn btn-primary">Save</button>
+      <a class="btn btn-default" href="http://liveperl.us:[% port %]/" target=code>Live code</a>
   </form>
 
     <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
@@ -68,6 +73,21 @@
         lineNumbers: true
       });
       editor.setSize("100%", "550")
+    </script>
+
+    <script>
+      document.domain = document.domain;
+    </script>
+
+    <div id=content>
+        Waiting for content.
+    </div>
+    
+    <script>
+        // Give morbo time to relaod
+        setTimeout(function() {
+            $("#content").html('<iframe src="http://liveperl.us:[% port %]/" name="output" style="height:300px; width:100%;"></iframe>');
+        }, 3000);
     </script>
 </body>
 </html>
