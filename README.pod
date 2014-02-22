@@ -1,0 +1,37 @@
+=encoding utf8
+
+=head1 liveperl.us
+
+Real time tutorial for Mojollcious
+
+=head1 INSTALLATION
+
+    $ sudo yum install docker-io
+
+    $ sudo service docker start
+
+    $ sudo chkconfig docker on
+
+    $ sudo docker pull scaldwell/perl-5.16.3
+
+    $ cd /path/for/work
+
+    $ wget 'http://cpan.metacpan.org/authors/id/S/SR/SRI/Mojolicious-4.83.tar.gz'
+
+    $ mkdir src; cd src; gzip -dc ../Mojolicious-4.83.tar.gz | tar -xvf -; cd ..
+
+    $ Create Dockerfile: https://github.com/brianmed/liveperl.us/blob/master/docker/Dockerfile
+
+    $ sudo docker build -t bpmedley-0000001/mojolicious-tutorial .
+
+    $ mkdir /tmp/playground-0000001; echo "use Mojolicious::Lite;\nget '/' => sub { shift->render(text => 'Hi') };\napp->start;" > /tmp/playground-0000001/lite.pl
+
+    $ sudo docker run -v /tmp/playground-0000001:/playground -p 8000:3000 -d docker build -t bpmedley-0000001/mojolicious-tutorial
+
+
+    docker-io is in EPEL on CentOS.  
+
+    Mojolicious is installed every time a docker container is built.
+
+    Tht lite.pl file mounted from /tmp/playground-0000001; this is so that it can be changed outsite of the container and morbo pick up the changes.
+=cut

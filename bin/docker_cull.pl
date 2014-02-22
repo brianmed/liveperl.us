@@ -42,7 +42,7 @@ my @output = `/usr/bin/docker ps -a`;
 foreach my $line (@output) {
     if ($line =~ m#^(\S+)\s+(\S+)\s.*?Exit\s+\d+#) {
         push(@containers, $1);
-        push(@images, $1);
+        push(@images, $2);
     }
 }
 
