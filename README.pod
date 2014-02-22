@@ -20,7 +20,7 @@ Real time tutorial for Mojollcious
 
     $ mkdir src; cd src; gzip -dc ../Mojolicious-4.83.tar.gz | tar -xvf -; cd ..
 
-    $ Create Dockerfile: https://github.com/brianmed/liveperl.us/blob/master/docker/Dockerfile
+    # Create Dockerfile: https://github.com/brianmed/liveperl.us/blob/master/docker/Dockerfile
 
     $ sudo docker build -t bpmedley-0000001/mojolicious-tutorial .
 
