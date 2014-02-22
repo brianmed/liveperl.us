@@ -12,6 +12,8 @@ sub startup {
     my $site_dir = $self->config('site_dir');
     my $secret = $self->config('secret');
 
+    $self->sessions->cookie_name("liveperl_mojolicious");
+
     $self->plugin(AccessLog => {log => "$site_dir/docroot/live_perl/log/access.log", format => '%h %l %u %t "%r" %>s %b %D "%{Referer}i" "%{User-Agent}i"'});
     $self->plugin(tt_renderer => {template_options => {CACHE_SIZE => 0, COMPILE_EXT => undef, COMPILE_DIR => "/tmp/liveperl.us/templates"}});
     $self->renderer->default_handler('tt');
@@ -23,7 +25,8 @@ sub startup {
     $r->get('/')->to(controller => 'Index', action => 'slash');
 
     $r->any('/tutorial/start')->to(controller => 'Tutorial', action => 'start');
-    $r->any('/tutorial/hello')->to(controller => 'Tutorial', action => 'hello');
+    # $r->any('/tutorial/hello')->to(controller => 'Tutorial', action => 'hello');
+    $r->any('/tutorial/:file')->to(controller => 'Tutorial', action => 'go');
 }
 
 1;

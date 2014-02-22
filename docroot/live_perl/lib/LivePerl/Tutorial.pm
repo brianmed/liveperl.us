@@ -2,25 +2,14 @@ package LivePerl::Tutorial;
 
 use Mojo::Base 'Mojolicious::Controller';
 
-use File::Temp;
 use IPC::Run qw( run timeout );
-use IO::Scalar;
 use Mojo::Util qw(slurp spurt);
+use Mojo::JSON qw(j);
 
 sub start {
     my $self = shift;
     
     $self->render();
-}
-
-sub _data {
-    my $self = shift;
-    my $section = shift;
-
-    my $code = read_file("/opt/liveperl.us/data/samples/$section.txt") ;
-    my $dump = read_file("/opt/liveperl.us/data/samples/$section.dump") ;
-
-    return($code, $dump);
 }
 
 sub _docker {
@@ -96,6 +85,12 @@ sub _docker {
     }
 }
 
+sub _slot {
+    my $self = shift;
+
+    Mojo::IOLoop->stream($self->tx->connection)->timeout(100);
+}
+
 sub hello {
     my $self = shift;
 
@@ -112,7 +107,8 @@ sub hello {
             spurt($code, "/tmp/playground-$slot/lite.pl");
         }
         else {
-            $code = slurp("/tmp/playground-$slot/lite.pl");
+            $code = slurp("/opt/liveperl.us/data/samples/hello.txt");
+            spurt($code, "/tmp/playground-$slot/lite.pl");
         }
         $self->stash(code => $code);
 
@@ -125,6 +121,50 @@ sub hello {
         my $subtitle = q(<a style="color: #df0019;" href=http://mojolicio.us/perldoc/Mojolicious/Lite#Hello_World>Hello World</a>);
         $self->render(inline => '[% INCLUDE tutorial/template.html.tt %]', error => $@, code => "", html => "", subtitle => $subtitle);
     }
+}
+
+sub _section {
+    my $self = shift;
+    my $ops = shift;
+
+    my $code = $self->param("code");
+    my $section = $self->param("section");
+
+    Mojo::IOLoop->stream($self->tx->connection)->timeout(100);
+
+    eval {
+        my ($slot, $port) = $self->_docker;
+        $self->app->log->debug("slot: $slot");
+
+        if ($code && $code =~ m/\w/) {
+            spurt($code, "/tmp/playground-$slot/lite.pl");
+        }
+        else {
+            $code = slurp("/opt/liveperl.us/data/samples/$$ops{file}.txt");
+            spurt($code, "/tmp/playground-$slot/lite.pl");
+        }
+        $self->stash(code => $code);
+
+        my $html = sprintf($ops->{html}, $slot, $port);
+        $self->render(inline => '[% INCLUDE tutorial/template.html.tt %]', code => $code, html => $html, subtitle => $ops->{subtitle});
+    };
+    if ($@) {
+        $self->render(inline => '[% INCLUDE tutorial/template.html.tt %]', error => $@, code => "", html => "", subtitle => $ops->{subtitle});
+    }
+}
+
+sub go {
+    my $self = shift;
+
+    my $file = $self->param("file");
+
+    my $data = slurp("/opt/liveperl.us/data/samples/$file.json");
+    my $hash = j($data);
+
+    $self->_section({
+        %$hash,
+        file => $file,
+    });
 }
 
 1;

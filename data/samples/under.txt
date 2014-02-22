@@ -1,0 +1,36 @@
+use Mojolicious::Lite;
+
+get '/' => "index";
+
+# Authenticate based on name parameter
+under sub {
+  my $self = shift;
+
+  # Authenticated
+  my $name = $self->param('name') || '';
+  return 1 if $name eq 'Bender';
+
+  # Not authenticated
+  $self->render('denied');
+  return undef;
+};
+
+# Only reached when authenticated
+get '/auth' => 'auth';
+
+app->start;
+__DATA__
+
+@@ denied.html.ep
+You are not Bender, permission denied.
+
+@@ auth.html.ep
+Hello, Bender.
+
+@@ index.html.ep
+Hello, world<%= stash('name') ? ": " . stash('name') : '' %>.
+%= form_for "/auth" => begin
+    Name:
+    %= text_field "name"
+    %= submit_button
+% end

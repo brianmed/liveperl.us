@@ -1,0 +1,23 @@
+use Mojolicious::Lite;
+
+# A helper to identify visitors
+helper whois => sub {
+  my $self  = shift;
+  my $agent = $self->req->headers->user_agent || 'Anonymous';
+  my $ip    = $self->tx->remote_address;
+  return "$agent ($ip)";
+};
+
+# Use helper in template
+get '/' => sub {
+  my $self = shift;
+
+  $self->render("slash");
+};
+
+app->start;
+
+__DATA__
+
+@@ slash.html.ep
+We know who you are <%= whois %>.

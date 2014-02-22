@@ -1,0 +1,15 @@
+use Mojolicious::Lite;
+
+# Route leading to an action that renders a template
+get '/' => sub {
+  my $self = shift;
+  $self->stash(one => 23);
+  $self->render('slash', two => 24);
+};
+
+app->start;
+
+__DATA__
+
+@@ slash.html.ep
+The magic numbers are <%= $one %> and <%= $two %>.

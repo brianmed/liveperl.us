@@ -1,0 +1,14 @@
+use Mojolicious::Lite;
+
+# Access session data in action and template
+get '/' => sub {
+  my $self = shift;
+  $self->session->{counter}++;
+  $self->render("slash");
+};
+
+app->start;
+__DATA__
+
+@@ slash.html.ep
+Counter: <%= session 'counter' %>
