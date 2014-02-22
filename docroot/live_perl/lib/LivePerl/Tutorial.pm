@@ -56,71 +56,43 @@ sub _docker {
 
     # Need a slot
 
-    my @images = `/usr/bin/sudo /usr/bin/docker images`;
-    @images = sort @images;
-
-    my $last = "";
-    foreach my $image (@images) {
-        # $self->app->log->debug("image: $image");
-        if ($image =~ /^bpmedley-\S+-tutorial/) {
-            $last = $image;
-            chomp($last);
-        }
+    my $repo = sprintf("bpmedley-%d/mojolicious-tutorial", time);
+    my @build = (
+        "/usr/bin/sudo",
+        "docker", "build",
+        "-t", 
+        $repo,
+        "/opt/liveperl.us/docker"
+    );
+    my ($in, $out, $err) = ("", "", "");
+    my $cmd = join(" ", @build);
+    $self->app->log->debug($cmd);
+    eval {
+        run(\@build, \$in, \$out, \$err, timeout(90)) or die("error: $cmd: $!: $?\n");
+    };
+    if ($@) {
+        die("error: run: $cmd: $@\n");
     }
 
-    my $nbr;
-    if ($last) {
-        $self->app->log->debug("last: $last");
-        if ($last =~ m/bpmedley-(\d+)/) {
-            $nbr = $1;
-            $nbr =~ s#^0+##;
-            ++$nbr;
-        }
-    }
+    my $image = "";
+    if ($out =~ m/^Successfully built (\S+)/m) {
+        $image = $1;
+        $self->session(image => $image);
+        $self->app->log->debug("Successfully bulit $image");
 
-    my $repo = "";
-    if ($nbr) {
-        $repo = sprintf("bpmedley-%07d/mojolicious-tutorial", $nbr);
-        my @build = (
-            "/usr/bin/sudo",
-            "docker", "build",
-            "-t", 
-            $repo,
-            "/opt/liveperl.us/docker"
-        );
-        my ($in, $out, $err) = ("", "", "");
-        my $cmd = join(" ", @build);
-        $self->app->log->debug($cmd);
-        eval {
-            run(\@build, \$in, \$out, \$err, timeout(30)) or die("error: $cmd: $!: $?\n");
-        };
-        if ($@) {
-            die("error: run: $cmd: $@\n");
-        }
+        my @joy = `/usr/bin/sudo /opt/liveperl.us/bin/docker_start.pl $image 2>&1`;
+        $self->app->log->debug("Joy: " . join("", @joy));
 
-        my $image = "";
-        if ($out =~ m/^Successfully built (\S+)/m) {
-            $image = $1;
-            $self->session(image => $image);
-            $self->app->log->debug("Successfully bulit $image");
-
-            my @joy = `/usr/bin/sudo /opt/liveperl.us/bin/docker_start.pl $image 2>&1`;
-            $self->app->log->debug("Joy: " . join("", @joy));
-
-            my @output = qx{/usr/bin/sudo /usr/bin/docker ps};
-            foreach my $line (@output) {
-                if ($line =~ m/$repo.*0.0.0.0:(80\d+)/) {
-                    return($image, $1);
-                }
+        my @output = qx{/usr/bin/sudo /usr/bin/docker ps};
+        foreach my $line (@output) {
+            if ($line =~ m/$repo.*0.0.0.0:(80\d+)/) {
+                return($image, $1);
             }
-            die("Unable to run image: $image\n");
         }
-        else {
-            die("No container found\n");
-        }
+        die("Unable to run image: $image\n");
     }
     else {
-        die("No previous image found\n");
+        die("No container found\n");
     }
 }
 
@@ -130,7 +102,7 @@ sub hello {
     my $code = $self->param("code");
     my $section = $self->param("section");
 
-    Mojo::IOLoop->stream($self->tx->connection)->timeout(60);
+    Mojo::IOLoop->stream($self->tx->connection)->timeout(100);
 
     eval {
         my ($slot, $port) = $self->_docker;
