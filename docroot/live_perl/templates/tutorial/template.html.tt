@@ -46,17 +46,31 @@
 
     [% html %]
 
-  <form method=post>
-    <textarea id=code name=code class="field span12" rows=20>[% code %]</textarea>
+    <style>
+        #wrap{
+            width:1500px;
+            margin:0 auto;
+        }
+        .box{
+            float:left;
+            width:45%;
+            height:550px;
+            margin:0 auto;
+        }
+    </style>
 
-    <br>
+  <form id=joy method=post>
+    <div id="wrap">
+        <div id=code class="box">
+        </div>
+        <div id=content class="box">
+            Waiting for content.
+        </div>
+    </div>
 
-      [% IF output %]
-            <pre class="pre-scrollable">[% output | html %]</pre>
-      [% END %]
+    <input type="hidden" id="the_code" name=code value="[% code | html %]">
 
-      <button type="submit" class="btn btn-primary">Save</button>
-      <a class="btn btn-default" href="http://liveperl.us:[% port %]/" target=code>Live code</a>
+    <br>&nbsp;<br>
   </form>
 
     <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
@@ -67,27 +81,57 @@
         padding-bottom: 40px;
     }
     </style>
-
-    <script>
-      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        lineNumbers: true
-      });
-      editor.setSize("100%", "550")
-    </script>
-
-    <script>
-      document.domain = document.domain;
-    </script>
-
-    <div id=content>
-        Waiting for content.
-    </div>
     
     <script>
+        var editor;
+        var timeout;
+        var reload_iframe;
+
         // Give morbo time to relaod
         setTimeout(function() {
-            $("#content").html('<iframe src="http://liveperl.us:[% port %]/" name="output" style="height:300px; width:100%;"></iframe>');
+            $("#content").html('<iframe src="http://liveperl.us:[% port %]/" id="output" style="width:100%; height:100%""></iframe>');
         }, 3000);
+
+        $("#reload").click(function() {
+            document.getElementById('output').contentWindow.location.reload();
+        });        
+
+        $("#joy").submit(function(e) {
+            $("#the_code").val(editor.getValue());
+        });
+
+        function reload() {
+            reload_iframe = 1;
+        }
+
+        (function(){
+            if (reload_iframe) {
+                reload_iframe = 0;
+                $("#content").html('Autosaving...');
+
+                setTimeout(function() {
+                    $("#content").html('<iframe src="http://liveperl.us:[% port %]/" id="output" style="width:100%; height:100%""></iframe>');
+                }, 1300);
+            }
+            setTimeout(arguments.callee, 1300);
+        })();
+
+        function autosave() {
+            $("#the_code").val(editor.getValue());
+            $.post("http://liveperl.us/tutorial/autosave", $("#joy").serialize(), reload);
+        }
+    </script>
+
+    <script>
+      editor = CodeMirror(document.getElementById("code"), {
+        lineNumbers: true
+      });
+      editor.setSize("630", "550");
+      editor.setValue(document.getElementById("the_code").value);
+      editor.on("cursorActivity", function() {
+        clearTimeout(timeout);
+        timeout = setTimeout("autosave()", 1300);
+      });
     </script>
 </body>
 </html>

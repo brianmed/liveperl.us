@@ -24,7 +24,7 @@ sub startup {
     
     $r->get('/')->to(controller => 'Tutorial', action => 'start');
 
-    $r->any('/tutorial/start')->to(controller => 'Tutorial', action => 'start');
+    $r->post('/tutorial/autosave')->to(controller => 'Tutorial', action => 'autosave');
     $r->any('/tutorial/:file')->to(controller => 'Tutorial', action => 'go');
 }
 

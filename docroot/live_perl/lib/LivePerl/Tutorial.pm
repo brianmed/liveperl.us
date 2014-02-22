@@ -153,4 +153,20 @@ sub go {
     });
 }
 
+sub autosave {
+    my $self = shift;
+
+    my $code = $self->param("code");
+    my $repo = $self->session("repo");
+
+    return $self->render(json => { ret => 0 }) unless $repo;
+
+    my ($unique) = $repo =~ m#bpmedley-(\d+)#;
+
+    $self->app->log->debug("autosave: repo: $repo: unique: $unique");
+    spurt($code, "/tmp/playground-$unique/lite.pl");
+
+    return $self->render(json => { ret => 1 });
+}
+
 1;
