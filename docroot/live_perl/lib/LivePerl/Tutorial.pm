@@ -85,44 +85,6 @@ sub _docker {
     }
 }
 
-sub _slot {
-    my $self = shift;
-
-    Mojo::IOLoop->stream($self->tx->connection)->timeout(100);
-}
-
-sub hello {
-    my $self = shift;
-
-    my $code = $self->param("code");
-    my $section = $self->param("section");
-
-    Mojo::IOLoop->stream($self->tx->connection)->timeout(100);
-
-    eval {
-        my ($slot, $port) = $self->_docker;
-        $self->app->log->debug("slot: $slot");
-
-        if ($code && $code =~ m/\w/) {
-            spurt($code, "/tmp/playground-$slot/lite.pl");
-        }
-        else {
-            $code = slurp("/opt/liveperl.us/data/samples/hello.txt");
-            spurt($code, "/tmp/playground-$slot/lite.pl");
-        }
-        $self->stash(code => $code);
-
-        my $blurb = qq(A simple Hello World application can look like this, strict, warnings, utf8 and Perl 5.10 features are automatically enabled and a few functions imported when you use Mojolicious::Lite, turning your script into a full featured web application.);
-        my $subtitle = q(<a style="color: #df0019;" href=http://mojolicio.us/perldoc/Mojolicious/Lite#Hello_World>Hello World</a>);
-        my $html = qq(Slot: $slot<br><a href="http://liveperl.us:$port" target=code>Live code</a><br>$blurb);
-        $self->render(inline => '[% INCLUDE tutorial/template.html.tt %]', code => $code, html => $html, subtitle => $subtitle);
-    };
-    if ($@) {
-        my $subtitle = q(<a style="color: #df0019;" href=http://mojolicio.us/perldoc/Mojolicious/Lite#Hello_World>Hello World</a>);
-        $self->render(inline => '[% INCLUDE tutorial/template.html.tt %]', error => $@, code => "", html => "", subtitle => $subtitle);
-    }
-}
-
 sub _section {
     my $self = shift;
     my $ops = shift;

@@ -25,7 +25,6 @@ sub startup {
     $r->get('/')->to(controller => 'Index', action => 'slash');
 
     $r->any('/tutorial/start')->to(controller => 'Tutorial', action => 'start');
-    # $r->any('/tutorial/hello')->to(controller => 'Tutorial', action => 'hello');
     $r->any('/tutorial/:file')->to(controller => 'Tutorial', action => 'go');
 }
 
