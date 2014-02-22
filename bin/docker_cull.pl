@@ -28,10 +28,28 @@ foreach my $container (@containers) {
         my $whence = $now - $dt;
         my $hours = $whence->in_units("hours");
 
-        if (1 < $hours) {
+        if (1 <= $hours) {
             system("/usr/bin/docker", "stop", $container);
-            system("/usr/bin/docker", "rm", $container);
-            system("/usr/bin/docker", "rmi", $hash->[0]{Image});
+            # system("/usr/bin/docker", "rm", $container);
+            # system("/usr/bin/docker", "rmi", $hash->[0]{Image});
         }
     }
+}
+
+@containers = ();
+my @images = ();
+my @output = `/usr/bin/docker ps -a`;
+foreach my $line (@output) {
+    if ($line =~ m#^(\S+)\s+(\S+)\s.*?Exit\s+\d+#) {
+        push(@containers, $1);
+        push(@images, $1);
+    }
+}
+
+foreach my $container (@containers) {
+    system("/usr/bin/docker", "rm", $container);
+}
+
+foreach my $image (@images) {
+    system("/usr/bin/docker", "rmi", $image);
 }

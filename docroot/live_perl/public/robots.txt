@@ -1,2 +1,10 @@
 User-agent: *
-Disallow: /start
+Disallow: /tutorial/hello
+Disallow: /tutorial/stash
+Disallow: /tutorial/params
+Disallow: /tutorial/placeholders
+Disallow: /tutorial/http
+Disallow: /tutorial/helpers
+Disallow: /tutorial/sessions
+Disallow: /tutorial/websockets
+Disallow: /tutorial/under

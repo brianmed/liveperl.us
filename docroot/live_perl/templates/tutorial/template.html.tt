@@ -1,3 +1,4 @@
+[% UNLESS previous %]
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -13,8 +14,24 @@
 <body>
 
     [% INCLUDE navbar.html.tt %]
+[% END %]
 
+    [% IF progress %]
+        <div id=progress>
+        <h1>Building docker image... please wait</h1>
+        </div>
+         [% STOP %]
+    [% END %]
+
+    [% IF previous %]
+    <script>
+        $('#progress').remove();
+    </script>
+    [% END %]
+
+    [% IF subtitle %]
     <h1>Perl Source: [% subtitle %]</h1>
+    [% END %]
 
     [% IF error %]
         <div class="alert alert-warning">[% error %]<div>

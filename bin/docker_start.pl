@@ -1,14 +1,17 @@
 #!/opt/perl
 
+use Mojo::Base -strict;
 use File::Copy;
 
-my $image = $ARGV[0];
+my $repo = $ARGV[0];
 
-mkdir("/tmp/playground-$image");
-copy("/opt/liveperl.us/data/samples/hello.txt", "/tmp/playground-$image/lite.pl");
+my ($unique) = $repo =~ m#bpmedley-(\d+)#;
+
+mkdir("/tmp/playground-$unique");
+copy("/opt/liveperl.us/data/samples/hello.txt", "/tmp/playground-$unique/lite.pl");
 my ($login,$pass,$uid,$gid) = getpwnam("mojo");
-chown($uid, $gid, "/tmp/playground-$image");
-chown($uid, $gid, "/tmp/playground-$image/lite.pl");
+chown($uid, $gid, "/tmp/playground-$unique");
+chown($uid, $gid, "/tmp/playground-$unique/lite.pl");
 
 my @output = `/usr/bin/docker ps`;
 my %ports = ();
@@ -32,10 +35,10 @@ my @cmd = (
     "-c",
     "15",
 	"-v",
-	"/tmp/playground-$image:/playground",
+	"/tmp/playground-$unique:/playground",
 	"-p",
 	"$port:3000",
 	"-d",
-	$image
+	$repo
 );
 system(@cmd);
