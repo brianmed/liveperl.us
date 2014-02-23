@@ -2,9 +2,10 @@ package LivePerl::Tutorial;
 
 use Mojo::Base 'Mojolicious::Controller';
 
-use IPC::Run qw( run timeout );
 use Mojo::Util qw(slurp spurt);
 use Mojo::JSON qw(j);
+
+use Encode qw(encode decode);
 
 sub start {
     my $self = shift;
@@ -39,8 +40,9 @@ sub _docker {
         return $self->render(inline => '[% INCLUDE tutorial/template.html.tt %]', previous => 0, error => $msg, code => "", html => "", subtitle => "");
     }
 
-    my $repo = sprintf("bpmedley-%d/mojolicious-tutorial", time . $$);
+    my $repo = sprintf("bpmedley-%013d/liveperl", time . int(rand(1000)));
     $self->session(repo => $repo);
+
     # Need a slot
 
     my $build_it = sub {
@@ -58,11 +60,10 @@ sub _docker {
         my ($in, $out, $err) = ("", "", "");
         my $cmd = join(" ", @build);
         $self->app->log->debug($cmd);
-        eval {
-            run(\@build, \$in, \$out, \$err, timeout(90)) or die("error: $cmd: $!: $?\n");
-        };
-        if ($@) {
-            die("error: run: $cmd: $@\n");
+        {
+            local $/;
+
+            $out = `$cmd 2>&1`;
         }
 
         if ($out =~ m/^Successfully built (\S+)/m) {
@@ -86,6 +87,7 @@ sub _docker {
             die("Unable to run image: $repo\n");
         }
         else {
+            $self->app->log->debug("No container found: $out");
             die("No container found\n");
         }
     };
@@ -123,15 +125,15 @@ sub _section {
         $self->app->log->debug("repo: $repo: unique: $unique");
 
         if ($code && $code =~ m/\w/) {
-            spurt($code, "/tmp/playground-$unique/lite.pl");
+            spurt(encode("utf8", $code), "/tmp/playground-$unique/lite.pl");
         }
         else {
             $code = slurp("/opt/liveperl.us/data/samples/$$ops{file}.txt");
             spurt($code, "/tmp/playground-$unique/lite.pl");
         }
-        $self->stash(code => $code);
 
         my $html = sprintf($ops->{html}, $unique, $port);
+        $html = "<!-- $unique --> $html";
         my $output = $self->render(port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/template.html.tt %]', previous => $self->stash->{_previous} // 0, code => $code, html => $html, subtitle => $ops->{subtitle});
         $self->write_chunk($output => sub { $self->finish });
     };
@@ -164,7 +166,7 @@ sub autosave {
     my ($unique) = $repo =~ m#bpmedley-(\d+)#;
 
     $self->app->log->debug("autosave: repo: $repo: unique: $unique");
-    spurt($code, "/tmp/playground-$unique/lite.pl");
+    spurt(encode("UTF-8", $code), "/tmp/playground-$unique/lite.pl");
 
     return $self->render(json => { ret => 1 });
 }
