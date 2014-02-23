@@ -2,6 +2,21 @@ package LivePerl;
 
 use Mojo::Base 'Mojolicious';
 
+$ENV{PATH} ||= '';
+my @DOCKER;
+
+for my $path (split /:/, $ENV{PATH}) {
+  next unless -x "$path/docker";
+  push @DOCKER, "$path/docker";
+  last;
+}
+
+for my $path (split /:/, $ENV{PATH}) {
+  next unless @DOCKER and -x "$path/sudo";
+  unshift @DOCKER, "$path/sudo";
+  last;
+}
+
 # This method will run once at server start
 sub startup {
     my $self = shift;
@@ -22,10 +37,35 @@ sub startup {
     
     my $r = $self->routes;
     
-    $r->get('/')->to(controller => 'Tutorial', action => 'start');
+    $r->get('/')->to('tutorial#start');
+    $r->get('/tutorials')->to(template => 'tutorials');
+    $r->post('/tutorial/autosave')->to('tutorial#autosave')->name('autosave');
+    $r->any('/tutorial/:file')->to('tutorial#go');
 
-    $r->post('/tutorial/autosave')->to(controller => 'Tutorial', action => 'autosave');
-    $r->any('/tutorial/:file')->to(controller => 'Tutorial', action => 'go');
+    unless(grep { /docker/ } @DOCKER) {
+      $self->log->error("Could not find docker executable!");
+    }
+
+    $self->helper(docker => sub {
+        my($c, @command) = @_;
+        my @output;
+
+        return @output unless @DOCKER;
+
+        $c->app->log->debug("open -| @DOCKER @command");
+        open my $DOCKER, '-|', @DOCKER, @command;
+        while(<$DOCKER>) {
+          chomp;
+          push @output, $_;
+        }
+
+        return @output;
+    });
+
+    $self->helper(sample => sub {
+        return if $_[1] =~ /\.\./;
+        return "$site_dir/data/samples/$_[1]";
+    });
 }
 
 1;

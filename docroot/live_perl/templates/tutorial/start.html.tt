@@ -1,31 +1,50 @@
 <!DOCTYPE HTML>
-<html>
+<html class="cover">
 <head>
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
-
-    <script src="/jquery-1.9.1.js"></script>
-    <script src="/bootstrap/js/bootstrap.js"></script>
+  <title>LivePerl</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/cover.css">
+  <script src="/jquery-1.9.1.js"></script>
+  <script src="/bootstrap/js/bootstrap.js"></script>
 </head>
 <body>
-
-    <div>
-
-    [% INCLUDE navbar.html.tt %]
-
-          <div class="row-fluid">
-            <div class="span5 offset1">
-    <h1>Enjoy your experience on LivePerl.</h1>
-    <h4>Please select a tutorial from the above sections and have fun.</h4>
-<p>Perl is a general-purpose programming language originally developed for text manipulation and now used for a wide range of tasks including system administration, web development, network programming, GUI development, and more.</p>
-<p>The language is intended to be practical (easy to use, efficient, complete) rather than beautiful (tiny, elegant, minimal). Its major features are that it's easy to use, supports both procedural and object-oriented (OO) programming, has powerful built-in support for text processing, and has one of the world's most impressive collections of third-party modules.</p>
-<p>Different definitions of Perl are given in perl, perlfaq1 and no doubt other places. From this we can determine that Perl is different things to different people, but that lots of people think it's at least worth writing about.</p>
-            <noscript><h1 style="color: #df0019;">This Site requires JavaScript, please enable it.</h1></noscript>
-        <a href="/tutorial/hello" class="btn btn-primary btn-large">
-          Start
-        </a>
+<div class="site-wrapper">
+  <div class="site-wrapper-inner">
+    <div class="cover-container">
+      <div class="masthead clearfix">
+        <div class="inner">
+          <h3 class="masthead-brand">Liveperl</h3>
+          <ul class="nav masthead-nav">
+            <li class="active">[% h.link_to('Home', '/') %]</li>
+            <li>[% h.link_to('Tutorials', '/tutorials') %]</li>
+            <li><a href="mailto:support@liveperl.us">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="inner cover">
+        <h1 class="cover-heading">Enjoy your Perl experience.</h1>
+        <p class="lead">
+          LivePerl allow you to try out [% h.link_to('perl', 'http://perl.org') %]
+          directly in your browser.
+        </p>
+        <p class="lead">
+          You can select from a wide variety of [% h.link_to('tutorials', '/tutorials') %],
+          or hit "Start" to dive in.
+        </p>
+        <p class="lead">
+          [% h.link_to('Start', '/tutorial/hello', 'class', 'btn btn-lg btn-default') %]
+        </p>
+      </div>
+      <div class="mastfoot">
+        <div class="inner">
+          <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+        </div>
+      </div>
     </div>
-    </div>
-
   </div>
+</div>
 </body>
 </html>
