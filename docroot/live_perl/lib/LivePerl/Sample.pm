@@ -34,6 +34,8 @@ Returns the template code.
 
 =cut
 
+use Encode qw(encode);
+
 sub code {
   my $self = shift;
   my $class = ref $self || $self;
@@ -42,7 +44,7 @@ sub code {
   $TEMPLATES{$class} ||= do {
     my $FH = *{"${class}::DATA"};
     local $/;
-    readline $FH;
+    encode("utf8", readline $FH);
   };
 }
 
