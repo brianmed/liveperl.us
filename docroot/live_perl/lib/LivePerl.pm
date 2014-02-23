@@ -21,26 +21,20 @@ for my $path (split /:/, $ENV{PATH}) {
 sub startup {
     my $self = shift;
 
-    $self->log->level("debug");
-
     $self->plugin("Config");
-    my $site_dir = $self->config('site_dir');
-    my $secret = $self->config('secret');
-
-    $self->sessions->cookie_name("liveperl_mojolicious");
-
-    $self->plugin(AccessLog => {log => "$site_dir/docroot/live_perl/log/access.log", format => '%h %l %u %t "%r" %>s %b %D "%{Referer}i" "%{User-Agent}i"'});
+    $self->plugin(AccessLog => {log => $self->home->rel_file('log/access.log'), format => '%h %l %u %t "%r" %>s %b %D "%{Referer}i" "%{User-Agent}i"'});
     $self->plugin(tt_renderer => {template_options => {CACHE_SIZE => 0, COMPILE_EXT => undef, COMPILE_DIR => "/tmp/liveperl.us/templates"}});
-    $self->renderer->default_handler('tt');
 
-    $self->secrets([$secret]);
+    $self->renderer->default_handler('tt');
+    $self->sessions->cookie_name("liveperl_mojolicious");
+    $self->secrets([$self->config('secret') || time]);
     
     my $r = $self->routes;
     
     $r->get('/')->to('tutorial#start');
     $r->get('/tutorials')->to(template => 'tutorials');
     $r->post('/tutorial/autosave')->to('tutorial#autosave')->name('autosave');
-    $r->any('/tutorial/:file')->to('tutorial#go');
+    $r->any('/tutorial/:name')->to('tutorial#go');
 
     unless(grep { /docker/ } @DOCKER) {
       $self->log->error("Could not find docker executable!");
@@ -60,11 +54,6 @@ sub startup {
         }
 
         return @output;
-    });
-
-    $self->helper(sample => sub {
-        return if $_[1] =~ /\.\./;
-        return "$site_dir/data/samples/$_[1]";
     });
 }
 

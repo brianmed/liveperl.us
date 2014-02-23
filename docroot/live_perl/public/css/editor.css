@@ -6,12 +6,13 @@ a:hover {
 }
 
 /* Base structure */
-html,
 body {
   background-color: #333;
-}
-body {
   color: #fff;
+}
+
+form {
+  margin: 0;
 }
 
 /*

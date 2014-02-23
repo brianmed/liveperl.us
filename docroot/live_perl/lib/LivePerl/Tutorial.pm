@@ -2,10 +2,19 @@ package LivePerl::Tutorial;
 
 use Mojo::Base 'Mojolicious::Controller';
 
-use Mojo::Util qw(slurp spurt);
+use Mojo::Util qw(spurt);
 use Mojo::JSON qw(j);
 
 use Encode qw(encode decode);
+
+has sample => sub {
+  my $self = shift;
+  my $name = ucfirst $self->stash('name') || 'Hello';
+
+  $name =~ /^\w+$/ or die "Invalid sample name";
+  eval "require LivePerl::Sample::$name; 1" or die $@;
+  "LivePerl::Sample::$name"->new;
+};
 
 sub _docker {
     my $self = shift;
@@ -29,7 +38,7 @@ sub _docker {
 
     if (31 <= scalar $self->docker('ps')) {
         my $msg = "No more slots<br>The max number of people using the app has been reached.<br>Please try again later.\n";
-        return $self->render(inline => '[% INCLUDE tutorial/go.html.tt %]', previous => 0, error => $msg, code => "", html => "", subtitle => "");
+        return $self->render(inline => '[% INCLUDE tutorial/go.html.tt %]', previous => 0, error => $msg);
     }
 
     my $repo = sprintf("bpmedley-%013d/liveperl", time . int(rand(1000)));
@@ -83,7 +92,7 @@ sub _docker {
         };
         if ($@) {
             $self->app->log->debug($@);
-            my $html = $self->render(partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => 1, error => $@, code => "", html => "", subtitle => "");
+            my $html = $self->render(partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => 1, error => $@);
             $self->write_chunk($html => sub { $self->finish });
         }
     });
@@ -91,7 +100,6 @@ sub _docker {
 
 sub _section {
     my $self = shift->render_later;
-    my $ops = shift;
 
     $self->stash->{_tx} = $self->tx;
     $self->stash->{_app} = $self->app;
@@ -101,6 +109,7 @@ sub _section {
         my $self = shift;
         my ($repo, $port) = ($self->stash->{_repo}, $self->stash->{_port});
         my $code = $self->param("code");
+        my $output;
 
         my ($unique) = $repo =~ m#bpmedley-(\d+)#;
 
@@ -109,14 +118,8 @@ sub _section {
         if ($code && $code =~ m/\w/) {
             spurt(encode("utf8", $code), "/tmp/playground-$unique/lite.pl");
         }
-        else {
-            $code = slurp $self->sample("$$ops{file}.txt");
-            spurt $code, "/tmp/playground-$unique/lite.pl";
-        }
 
-        my $html = sprintf($ops->{html}, $unique, $port);
-        $html = "<!-- $unique --> $html";
-        my $output = $self->render(port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => $self->stash->{_previous} // 0, code => $code, html => $html, subtitle => $ops->{subtitle});
+        $output = $self->render(port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => $self->stash->{_previous} // 0);
         $self->write_chunk($output => sub { $self->finish });
     };
 
@@ -126,13 +129,8 @@ sub _section {
 sub go {
     my $self = shift;
 
-    my $file = $self->param("file");
-
-    my $data = slurp $self->sample("$file.json");
-    my $hash = j $data;
-
-    return $self->render(%$hash, file => $file) if $ENV{TEST_EDITOR};
-    return $self->_section({ %$hash, file => $file });
+    return $self->render if $ENV{TEST_EDITOR};
+    return $self->_section;
 }
 
 sub autosave {

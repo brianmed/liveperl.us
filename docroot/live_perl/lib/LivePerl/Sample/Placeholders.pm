@@ -1,3 +1,12 @@
+package LivePerl::Sample::Placeholders;
+use Mojo::Base 'LivePerl::Sample';
+
+has doc_url => 'http://mojolicio.us/perldoc/Mojolicious/Lite#Placeholders';
+has description => 'Route placeholders allow capturing parts of a request path until a / or . separator occurs, results are accessible via "stash" in Mojolicious::Controller and "param" in Mojolicious::Controller.';
+has title => 'Placeholders';
+
+1;
+__DATA__
 #!/usr/local/bin/perl
 
 use Mojolicious::Lite;
