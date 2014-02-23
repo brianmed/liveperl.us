@@ -20,8 +20,7 @@ sub _docker {
     if ($self->session("repo")) {
         my $repo = $self->session("repo");
 
-        my @output = qx{/usr/bin/sudo /usr/bin/docker ps};
-        foreach my $line (@output) {
+        foreach my $line ($self->docker('ps')) {
             if ($line =~ m/^(\S+)\s+$repo.*0.0.0.0:(80\d+)/) {
                 $self->stash->{_container} = $1;
                 $self->stash->{_port} = $2;
@@ -34,8 +33,7 @@ sub _docker {
         delete $self->session->{image};
     }
 
-    my @output = qx{/usr/bin/sudo /usr/bin/docker ps};
-    if (31 <= scalar(@output)) {
+    if (31 <= scalar $self->docker('ps')) {
         my $msg = "No more slots<br>The max number of people using the app has been reached.<br>Please try again later.\n";
         return $self->render(inline => '[% INCLUDE tutorial/template.html.tt %]', previous => 0, error => $msg, code => "", html => "", subtitle => "");
     }
@@ -50,13 +48,7 @@ sub _docker {
 
         my $repo = $self->session("repo");
         $self->app->log->debug($repo);
-        my @build = (
-            "/usr/bin/sudo",
-            "docker", "build",
-            "-t", 
-            $repo,
-            "/opt/liveperl.us/docker"
-        );
+        my @build = $self->docker(build => -t => $repo, '/opt/liveperl.us/docker');
         my ($in, $out, $err) = ("", "", "");
         my $cmd = join(" ", @build);
         $self->app->log->debug($cmd);
@@ -70,11 +62,7 @@ sub _docker {
             my $image = $1;
             $self->app->log->debug("Successfully built $image");
 
-            my @joy = `/usr/bin/sudo /opt/liveperl.us/bin/docker_start.pl $repo 2>&1`;
-            $self->app->log->debug("Joy: " . join("", @joy));
-
-            my @output = qx{/usr/bin/sudo /usr/bin/docker ps};
-            foreach my $line (@output) {
+            foreach my $line ($self->docker('ps')) {
                 if ($line =~ m/^(\S+)\s+$repo.*0.0.0.0:(80\d+)/) {
                     my $container = $1;
                     my $port = $2;
@@ -128,8 +116,8 @@ sub _section {
             spurt(encode("utf8", $code), "/tmp/playground-$unique/lite.pl");
         }
         else {
-            $code = slurp("/opt/liveperl.us/data/samples/$$ops{file}.txt");
-            spurt($code, "/tmp/playground-$unique/lite.pl");
+            $code = slurp $self->sample("$$ops{file}.txt");
+            spurt $code, "/tmp/playground-$unique/lite.pl";
         }
 
         my $html = sprintf($ops->{html}, $unique, $port);
@@ -146,8 +134,8 @@ sub go {
 
     my $file = $self->param("file");
 
-    my $data = slurp("/opt/liveperl.us/data/samples/$file.json");
-    my $hash = j($data);
+    my $data = slurp $self->sample("$file.json");
+    my $hash = j $data;
 
     $self->_section({
         %$hash,

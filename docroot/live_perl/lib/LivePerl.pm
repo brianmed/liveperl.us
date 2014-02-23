@@ -2,6 +2,13 @@ package LivePerl;
 
 use Mojo::Base 'Mojolicious';
 
+$ENV{PATH} ||= '';
+my @DOCKER;
+
+for my $path (split /:/, $ENV{PATH}) {
+  push @DOCKER, "$path/docker" if -x "$path/docker";
+}
+
 # This method will run once at server start
 sub startup {
     my $self = shift;
@@ -26,6 +33,30 @@ sub startup {
 
     $r->post('/tutorial/autosave')->to(controller => 'Tutorial', action => 'autosave');
     $r->any('/tutorial/:file')->to(controller => 'Tutorial', action => 'go');
+
+    unless(grep { /docker/ } @DOCKER) {
+      $self->log->error("Could not find docker executable!");
+    }
+
+    $self->helper(docker => sub {
+        my($self, @command) = @_;
+        my @output;
+
+        return @output unless @DOCKER;
+
+        open my $DOCKER, '-|', @DOCKER;
+        while(<$DOCKER>) {
+          chomp;
+          push @output, $_;
+        }
+
+        return @output;
+    });
+
+    $self->helper(sample => sub {
+        return if $_[1] =~ /\.\./;
+        return "$site_dir/data/samples/$_[1]";
+    });
 }
 
 1;
