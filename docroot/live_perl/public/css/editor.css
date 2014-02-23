@@ -88,9 +88,15 @@ form {
   50% { top: 51%; opacity: 0.4; }
 }
 
-#output  {
-  height: 300px;
+#output {
   background: #eee;
+  color: #000;
+  height: 300px;
+}
+
+#output pre {
+  background: transparent;
+  border: 0;
 }
 
 #output iframe {
