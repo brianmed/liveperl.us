@@ -49,5 +49,5 @@ $(document).ready(function() {
     });
 
     editor.setValue(document.getElementById("the_code").value);
-    setTimeout(function() { reload(); }, 3000); // load inital page
+    $('#joy').submit();
 });
