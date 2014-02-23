@@ -25,7 +25,7 @@
       <ul class="nav masthead-nav">
         <li>[% h.link_to('Home', '/') %]</li>
         <li>[% h.link_to('Tutorials', '/tutorials') %]</li>
-        <li><a href="mailto:support@liveperl.us">Contact</a></li>
+        <li>[% h.link_to('About', '/about') %]</li>
       </ul>
     </div>
   </div>
