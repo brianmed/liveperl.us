@@ -27,8 +27,8 @@ $(document).ready(function() {
     $('body').append('<iframe name="autosave" style="position:absolute;left:-1000px;width:100px;"></iframe>');
     $('#joy').attr('target', 'autosave').submit(function(e) {
         $("#the_code").val(editor.getValue());
-        setTimeout(function() { reload(); }, 3000);
-        $.post(this.action, $("#joy").serialize(), reload);
+        setTimeout(function() { reload(); }, 3000); // delay to enable morbo to reload
+        $.post(this.action, $("#joy").serialize());
         return false;
     });
 
