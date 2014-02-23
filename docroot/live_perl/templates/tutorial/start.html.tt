@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html class="cover">
 <head>
-  <title>LivePerl</title>
+  <title>LivePerl - Enjoy your Perl experience</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +10,7 @@
   <script src="/jquery-1.9.1.js"></script>
   <script src="/bootstrap/js/bootstrap.js"></script>
 </head>
-<body>
+<body class="lp">
 <div class="site-wrapper">
   <div class="site-wrapper-inner">
     <div class="cover-container">
@@ -40,7 +40,12 @@
       </div>
       <div class="mastfoot">
         <div class="inner">
-          <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+          <p>
+            &copy; 2014
+            <a href="https://twitter.com/bpmedley">bpmedley</a> -
+            <a href="https://github.com/brianmed/liveperl.us">Code</a> -
+            <a href="https://github.com/brianmed/liveperl.us/issues">Issues</a>
+          </p>
         </div>
       </div>
     </div>

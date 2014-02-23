@@ -22,6 +22,10 @@ body {
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }
 
+body.lp {
+  box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+}
+
 html.cover,
 html.cover body {
   height: 100%;
@@ -119,7 +123,7 @@ div.cover .btn-lg {
  * Footer
  */
 
-.mastfoot {
+.mastfoot, .mastfoot a {
   color: #999; /* IE8 proofing */
   color: rgba(255,255,255,.5);
 }
