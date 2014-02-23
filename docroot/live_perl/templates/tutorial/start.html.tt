@@ -16,7 +16,7 @@
     <div class="cover-container">
       <div class="masthead clearfix">
         <div class="inner">
-          <h3 class="masthead-brand">Liveperl</h3>
+          <h3 class="masthead-brand">LivePerl</h3>
           <ul class="nav masthead-nav">
             <li class="active">[% h.link_to('Home', '/') %]</li>
             <li>[% h.link_to('Tutorials', '/tutorials') %]</li>

@@ -20,7 +20,7 @@
   <div class="masthead row-fluid">
     <div class="inner span12">
       <h3 class="masthead-brand">
-        Liveperl - [% c.sample.title() %]
+        LivePerl - [% c.sample.title() %]
       </h3>
       <ul class="nav masthead-nav">
         <li>[% h.link_to('Home', '/') %]</li>
