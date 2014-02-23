@@ -89,6 +89,10 @@ html.cover body {
   border-bottom-color: #fff;
 }
 
+.container {
+  margin-top: 80px;
+}
+
 @media (min-width: 768px) {
   .masthead-brand {
     float: left;
@@ -96,10 +100,6 @@ html.cover body {
   .masthead-nav {
     float: right;
   }
-}
-
-.container {
-  margin-top: 80px;
 }
 
 /*

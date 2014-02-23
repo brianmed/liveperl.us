@@ -29,7 +29,7 @@ sub _docker {
 
     if (31 <= scalar $self->docker('ps')) {
         my $msg = "No more slots<br>The max number of people using the app has been reached.<br>Please try again later.\n";
-        return $self->render(inline => '[% INCLUDE tutorial/template.html.tt %]', previous => 0, error => $msg, code => "", html => "", subtitle => "");
+        return $self->render(inline => '[% INCLUDE tutorial/go.html.tt %]', previous => 0, error => $msg, code => "", html => "", subtitle => "");
     }
 
     my $repo = sprintf("bpmedley-%013d/liveperl", time . int(rand(1000)));
@@ -74,7 +74,7 @@ sub _docker {
         }
     };
 
-    my $html = $self->render(partial => 1, inline => '[% INCLUDE tutorial/template.html.tt %]', progress => 1);
+    my $html = $self->render(partial => 1, inline => '[% INCLUDE tutorial/go.html.tt %]', progress => 1);
     $self->stash->{_previous} = 1;
     $self->write_chunk($html => sub { 
         eval {
@@ -83,7 +83,7 @@ sub _docker {
         };
         if ($@) {
             $self->app->log->debug($@);
-            my $html = $self->render(partial => 1, progress => 0, inline => '[% INCLUDE tutorial/template.html.tt %]', previous => 1, error => $@, code => "", html => "", subtitle => "");
+            my $html = $self->render(partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => 1, error => $@, code => "", html => "", subtitle => "");
             $self->write_chunk($html => sub { $self->finish });
         }
     });
@@ -116,7 +116,7 @@ sub _section {
 
         my $html = sprintf($ops->{html}, $unique, $port);
         $html = "<!-- $unique --> $html";
-        my $output = $self->render(port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/template.html.tt %]', previous => $self->stash->{_previous} // 0, code => $code, html => $html, subtitle => $ops->{subtitle});
+        my $output = $self->render(port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => $self->stash->{_previous} // 0, code => $code, html => $html, subtitle => $ops->{subtitle});
         $self->write_chunk($output => sub { $self->finish });
     };
 
@@ -131,10 +131,8 @@ sub go {
     my $data = slurp $self->sample("$file.json");
     my $hash = j $data;
 
-    $self->_section({
-        %$hash,
-        file => $file,
-    });
+    return $self->render(%$hash, file => $file) if $ENV{TEST_EDITOR};
+    return $self->_section({ %$hash, file => $file });
 }
 
 sub autosave {
