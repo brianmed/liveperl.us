@@ -6,7 +6,15 @@ $ENV{PATH} ||= '';
 my @DOCKER;
 
 for my $path (split /:/, $ENV{PATH}) {
-  push @DOCKER, "$path/docker" if -x "$path/docker";
+  next unless -x "$path/docker";
+  push @DOCKER, "$path/docker";
+  last;
+}
+
+for my $path (split /:/, $ENV{PATH}) {
+  next unless @DOCKER and -x "$path/sudo";
+  unshift @DOCKER, "$path/sudo";
+  last;
 }
 
 # This method will run once at server start
@@ -39,12 +47,13 @@ sub startup {
     }
 
     $self->helper(docker => sub {
-        my($self, @command) = @_;
+        my($c, @command) = @_;
         my @output;
 
         return @output unless @DOCKER;
 
-        open my $DOCKER, '-|', @DOCKER;
+        $c->app->log->debug("open -| @DOCKER @command");
+        open my $DOCKER, '-|', @DOCKER, @command;
         while(<$DOCKER>) {
           chomp;
           push @output, $_;
