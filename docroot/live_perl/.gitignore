@@ -1,1 +1,13 @@
-live_perl.conf
+/META.yml
+/MYMETA.*
+/blib/
+/inc/
+/pm_to_blib
+/MANIFEST
+/MANIFEST.bak
+/Makefile
+/Makefile.old
+/cover_db/
+*.old
+*.swp
+~$
