@@ -16,7 +16,7 @@ $(document).ready(function() {
         $reloader.load(function() {
             $output.find('iframe').not('.hidden').remove();
             $output.children().not('iframe').remove();
-            $reloader.removeClass('hidden').attr('data-ts', new Date());
+            $reloader.removeClass('hidden');
             $('form button[type="submit"]').text('Save');
             initialized = true;
         });
@@ -27,7 +27,7 @@ $(document).ready(function() {
     // post the form to a hidden iframe to re-use the form functionality
     $('#joy').submit(function(e) {
         e.preventDefault();
-        $("#the_code").val(editor.getValue());
+        $('form [name="code"]').val(editor.getValue());
         setTimeout(function() { reload(); }, 3000); // delay to enable morbo to reload
         $.post(this.action, $(this).serialize());
     });
@@ -48,6 +48,6 @@ $(document).ready(function() {
         }, 1000);
     });
 
-    editor.setValue(document.getElementById("the_code").value);
+    editor.setValue($('form [name="code"]').val());
     $('#joy').submit(); // make sure #output reflect the right sample
 });

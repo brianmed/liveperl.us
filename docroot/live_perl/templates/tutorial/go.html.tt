@@ -57,7 +57,7 @@
   <!-- [% unique %] -->
 
   <form id="joy" action="[% h.url_for('autosave') %]" method="post">
-    <input type="hidden" id="the_code" name="code" value="[% c.sample.code() | html %]">
+    <textarea class="hidden" name="code">[% c.sample.code() | html %]</textarea>
     <div class="row-fluid">
       <div class="span10 description">
         <p>[% c.sample.description() %]</p>
