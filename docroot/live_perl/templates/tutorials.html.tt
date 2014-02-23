@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>LivePerl</title>
+  <title>LivePerl - Tutorials</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +18,7 @@
       <ul class="nav masthead-nav">
         <li>[% h.link_to('Home', '/') %]</li>
         <li class="active">[% h.link_to('Tutorials', '/tutorials') %]</li>
-        <li><a href="mailto:support@liveperl.us">Contact</a></li>
+        <li>[% h.link_to('About', '/about') %]</li>
       </ul>
     </div>
   </div>
@@ -43,6 +43,11 @@
         <li><a href="/tutorial/websockets">WebSockets</a></li>
         <li><a href="/tutorial/under">Under</a></li>
       </ul>
+    </div>
+  </div>
+  <div class="row footer">
+    <div class="col-md-12">
+      [% INCLUDE "footer.html.tt" %]
     </div>
   </div>
 </div>

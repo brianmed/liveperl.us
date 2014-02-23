@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>LivePerl - About</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/cover.css">
+  <script src="/jquery-1.9.1.js"></script>
+  <script src="/bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+<div class="cover-container">
+  <div class="masthead clearfix">
+    <div class="inner">
+      <h3 class="masthead-brand">LivePerl</h3>
+      <ul class="nav masthead-nav">
+        <li>[% h.link_to('Home', '/') %]</li>
+        <li>[% h.link_to('Tutorials', '/tutorials') %]</li>
+        <li class="active">[% h.link_to('About', '/about') %]</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>About</h1>
+      <p>
+        [% h.link_to('http://liveperl.us', '/') %] is a webpage where you can
+        learn how to use <a href="http://perl.org">Perl</a> and
+        <a href="http://mojolicio.us">Mojolicious</a>.
+      </p>
+
+      <h2>FAQ</h2>
+      <dl>
+        <dt>Can I contribute with a tutorial?</dt>
+        <dd>
+          Yes! <a href="https://github.com/brianmed/liveperl.us">Fork</a> the
+          repo on github and create a new
+          <a href="https://github.com/brianmed/liveperl.us/tree/master/docroot/live_perl/lib/LivePerl/Sample">LivePerl::Sample</a>
+          module. Easy as a breeze.
+        </dd>
+        <dt>How long is the test server up and running?</dt>
+        <dd>It is running for maximum one hour.</dd>
+      </dl>
+
+      <h2>Authors</h2>
+      <ul>
+        <li><a href="https://github.com/brianmed">Brian Medley</a></li>
+        <li><a href="https://twitter.com/jhthorsen">Jan Henning Thorsen</a></li>
+        <li><a href="mailto:support@liveperl.us">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row footer">
+    <div class="col-md-12">
+      [% INCLUDE "footer.html.tt" %]
+    </div>
+  </div>
+</div>
+</head>

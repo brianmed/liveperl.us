@@ -6,7 +6,7 @@
 a,
 a:focus,
 a:hover {
-  color: #fff;
+  color: #eee;
 }
 
 /*
@@ -53,6 +53,9 @@ html.cover body {
   margin-left: auto;
 }
 
+.row a { text-decoration: underline; }
+.row a:hover { text-decoration: none; }
+
 /* Padding for spacing */
 .inner {
   padding: 30px 0;
@@ -96,6 +99,18 @@ html.cover body {
 .container {
   margin-top: 80px;
 }
+
+.footer {
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 2px solid #444;
+  font-size: 0.9em;
+}
+
+.footer, .footer a {
+  color: #999;
+}
+
 
 @media (min-width: 768px) {
   .masthead-brand {

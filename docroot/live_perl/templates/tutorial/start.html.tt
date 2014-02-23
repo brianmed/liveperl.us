@@ -20,7 +20,7 @@
           <ul class="nav masthead-nav">
             <li class="active">[% h.link_to('Home', '/') %]</li>
             <li>[% h.link_to('Tutorials', '/tutorials') %]</li>
-            <li><a href="mailto:support@liveperl.us">Contact</a></li>
+            <li>[% h.link_to('About', '/about') %]</li>
           </ul>
         </div>
       </div>
@@ -40,11 +40,7 @@
       </div>
       <div class="mastfoot">
         <div class="inner">
-          <p>
-            &copy; 2014
-            <a href="https://github.com/brianmed/liveperl.us">Code</a> -
-            <a href="https://github.com/brianmed/liveperl.us/issues">Issues</a>
-          </p>
+          [% INCLUDE "footer.html.tt" %]
         </div>
       </div>
     </div>
