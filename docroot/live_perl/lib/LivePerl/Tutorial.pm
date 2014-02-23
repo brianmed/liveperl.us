@@ -133,8 +133,12 @@ sub _section {
 sub go {
     my $self = shift;
 
-    return $self->render if $ENV{TEST_EDITOR};
-    return $self->_section;
+    return $self->_section unless $ENV{TEST_EDITOR};
+    return $self->render(
+          $ENV{TEST_EDITOR} eq 'error'    ? (error => 'Some error')
+        : $ENV{TEST_EDITOR} eq 'progress' ? (progress => 1)
+        :                                   ()
+    );
 }
 
 sub autosave {
