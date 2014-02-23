@@ -94,7 +94,7 @@ form {
   height: 300px;
 }
 
-#output pre {
+#output p {
   background: transparent;
   border: 0;
 }
