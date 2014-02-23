@@ -28,7 +28,8 @@ $(document).ready(function() {
     $('#joy').attr('target', 'autosave').submit(function(e) {
         $("#the_code").val(editor.getValue());
         setTimeout(function() { reload(); }, 3000);
-        return true;
+        $.post(this.action, $("#joy").serialize(), reload);
+        return false;
     });
 
     // resize the editor and output blocks when the screen change size
@@ -39,7 +40,7 @@ $(document).ready(function() {
     }).resize();
 
     // autosave the content of the editor
-    editor.on("cursorActivity", function() {
+    editor.on("update", function() {
         clearTimeout(timeout);
         timeout = setTimeout(function() {
           $('form button[type="submit"]').text('Saving...');
