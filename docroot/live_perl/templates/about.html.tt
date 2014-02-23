@@ -44,6 +44,8 @@
         </dd>
         <dt>How long is the test server up and running?</dt>
         <dd>It is running for maximum one hour.</dd>
+        <dt>How many can run the tutorials at once?</dt>
+        <dd>32.</dd>
       </dl>
 
       <h2>Authors</h2>
