@@ -81,7 +81,7 @@
       </div>
       <div class="span6">
         <div id="output" data-url="[% h.url_for('/').to_abs().port(port || 80) %]">
-          <p class="alert alert-info">Waiting for server to start up...</p>
+          <p>Waiting for server to start up...</p>
           <noscript><h1 style="color: #df0019;">This Site requires JavaScript, please enable it.</h1></noscript>
         </div>
       </div>
