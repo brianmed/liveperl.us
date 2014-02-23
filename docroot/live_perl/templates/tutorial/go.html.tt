@@ -9,11 +9,11 @@
   <link rel="stylesheet" href="/codemirror-3.1/lib/codemirror.css">
   <link rel="stylesheet" href="/codemirror-3.1/doc/docs.css">
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
-  <link rel="stylesheet" href="/bootstrap/css/editor.css">
+  <link rel="stylesheet" href="/css/editor.css">
   <script src="/jquery-1.9.1.js"></script>
-  <script src="/bootstrap/js/bootstrap.js"></script>
   <script src="/codemirror-3.1/lib/codemirror.js"></script>
   <script src="/codemirror-3.1/mode/perl/perl.js"></script>
+  <script src="/js/editor.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -65,7 +65,7 @@
     </div>
   </div>
 
-  <form id="joy" method="post">
+  <form id="joy" action="[% h.url_for('autosave') %]" method="post">
     <input type="hidden" id="the_code" name="code" value="[% code | html %]">
     <!-- a class="btn" href="http://liveperl.us:[% port %]" target="_blank">Output in new window</a -->
     <div class="row-fluid">
@@ -73,7 +73,7 @@
         <div id="code"></div>
       </div>
       <div class="span6">
-        <div id="content">
+        <div id="output" data-url="[% h.url_for('/').to_abs().port(port || 80) %]">
           <h2>Loading...</h2>
           <noscript><h1 style="color: #df0019;">This Site requires JavaScript, please enable it.</h1></noscript>
         </div>
@@ -81,67 +81,5 @@
     </form>
   </div>
 </div>
-
-<script type="text/javascript">
-    var editor;
-    var timeout;
-    var reload_iframe;
-
-    // Give morbo time to relaod
-    setTimeout(function() {
-        $("#content").html('<iframe src="http://liveperl.us:[% port %]/" id="output"></iframe>');
-    }, 3000);
-
-    $("#reload").click(function() {
-        document.getElementById('output').contentWindow.location.reload();
-    });        
-
-    $("#joy").submit(function(e) {
-        $("#the_code").val(editor.getValue());
-    });
-
-    function reload() {
-        reload_iframe = 1;
-    }
-
-    (function(){
-        if (reload_iframe) {
-            reload_iframe = 0;
-            $("#content").html('Autosaving...');
-
-            setTimeout(function() {
-                $("#content").html('<iframe src="http://liveperl.us:[% port %]/" id="output"></iframe>');
-            }, 1300);
-        }
-        setTimeout(arguments.callee, 1300);
-    })();
-
-    function autosave() {
-        $("#the_code").val(editor.getValue());
-        $.post("http://liveperl.us/tutorial/autosave", $("#joy").serialize(), reload);
-    }
-</script>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        var $code = $('#code');
-        var $content = $('#content');
-        var $masthead = $('.masthead');
-        var $information = $('.information');
-        var editor = CodeMirror($code[0], { lineNumbers: true });
-
-        $(window).resize(function() {
-          var height = $(window).height() - $masthead.height() - $information.height() - 50;
-          editor.setSize($code.width(), height);
-          $content.height(height);
-        }).resize();
-
-        editor.setValue(document.getElementById("the_code").value);
-        editor.on("cursorActivity", function() {
-            clearTimeout(timeout);
-            timeout = setTimeout("autosave()", 1300);
-        });
-    });
-</script>
 </body>
 </html>

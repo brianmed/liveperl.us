@@ -31,7 +31,7 @@ sub startup {
     
     $r->get('/')->to('tutorial#start');
     $r->get('/tutorials')->to(template => 'tutorials');
-    $r->post('/tutorial/autosave')->to('tutorial#autosave');
+    $r->post('/tutorial/autosave')->to('tutorial#autosave')->name('autosave');
     $r->any('/tutorial/:file')->to('tutorial#go');
 
     unless(grep { /docker/ } @DOCKER) {
