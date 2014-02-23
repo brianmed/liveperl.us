@@ -52,18 +52,22 @@ sub _docker {
         my $repo = $self->session("repo");
         $self->app->log->debug($repo);
         my @build = $self->docker(build => -t => $repo, '/opt/liveperl.us/docker');
-        my ($in, $out, $err) = ("", "", "");
-        my $cmd = join(" ", @build);
-        $self->app->log->debug($cmd);
-        {
-            local $/;
-
-            $out = `$cmd 2>&1`;
-        }
+        my $out = join("\n", @build);
+###         my ($in, $out, $err) = ("", "", "");
+###         my $cmd = join(" ", @build);
+###         $self->app->log->debug($cmd);
+###         {
+###             local $/;
+### 
+###             $out = `$cmd 2>&1`;
+###         }
 
         if ($out =~ m/^Successfully built (\S+)/m) {
             my $image = $1;
-            $self->app->log->debug("Successfully built $image");
+            $self->app->log->debug("Successfully built $image: $repo");
+
+            my @joy = `/usr/bin/sudo /opt/liveperl.us/bin/docker_start.pl $repo 2>&1`;
+            $self->app->log->debug("Joy: " . join("", @joy));
 
             foreach my $line ($self->docker('ps')) {
                 if ($line =~ m/^(\S+)\s+$repo.*0.0.0.0:(80\d+)/) {
@@ -119,7 +123,7 @@ sub _section {
             spurt(encode("utf8", $code), "/tmp/playground-$unique/lite.pl");
         }
 
-        $output = $self->render(port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => $self->stash->{_previous} // 0);
+        $output = $self->render(unique => $unique, port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => $self->stash->{_previous} // 0);
         $self->write_chunk($output => sub { $self->finish });
     };
 

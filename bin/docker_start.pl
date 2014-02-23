@@ -8,7 +8,7 @@ my $repo = $ARGV[0];
 my ($unique) = $repo =~ m#bpmedley-(\d+)#;
 
 mkdir("/tmp/playground-$unique");
-copy("/opt/liveperl.us/data/samples/hello.txt", "/tmp/playground-$unique/lite.pl");
+copy("/opt/liveperl.us/bin/hello.txt", "/tmp/playground-$unique/lite.pl");
 my ($login,$pass,$uid,$gid) = getpwnam("mojo");
 chown($uid, $gid, "/tmp/playground-$unique");
 chown($uid, $gid, "/tmp/playground-$unique/lite.pl");

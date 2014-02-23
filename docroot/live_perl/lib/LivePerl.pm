@@ -21,6 +21,8 @@ for my $path (split /:/, $ENV{PATH}) {
 sub startup {
     my $self = shift;
 
+    $self->log->level("debug");
+
     $self->plugin("Config");
     $self->plugin(AccessLog => {log => $self->home->rel_file('log/access.log'), format => '%h %l %u %t "%r" %>s %b %D "%{Referer}i" "%{User-Agent}i"'});
     $self->plugin(tt_renderer => {template_options => {CACHE_SIZE => 0, COMPILE_EXT => undef, COMPILE_DIR => "/tmp/liveperl.us/templates"}});

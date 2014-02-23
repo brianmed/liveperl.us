@@ -61,6 +61,8 @@
   [% STOP %]
 [% END %]
 
+  <!-- [% unique %] -->
+
   <form id="joy" action="[% h.url_for('autosave') %]" method="post">
     <input type="hidden" id="the_code" name="code" value="[% c.sample.code() | html %]">
     <div class="row-fluid">
