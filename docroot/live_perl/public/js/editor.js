@@ -13,7 +13,7 @@ $(document).ready(function() {
 
         $reloader = $('<iframe class="hidden"></iframe>');
         $reloader.attr('src', $output.attr('data-url'));
-        $reloader.load(function() {
+        $reloader.one('load', function() {
             $output.find('iframe').not('.hidden').remove();
             $output.children().not('iframe').remove();
             $reloader.removeClass('hidden');
