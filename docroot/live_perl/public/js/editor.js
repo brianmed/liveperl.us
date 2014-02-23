@@ -40,7 +40,7 @@ $(document).ready(function() {
     }).resize();
 
     // autosave the content of the editor
-    editor.on("cursorActivity", function() {
+    editor.on("update", function() {
         clearTimeout(timeout);
         timeout = setTimeout(function() {
           $('form button[type="submit"]').text('Saving...');
