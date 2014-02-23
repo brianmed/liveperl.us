@@ -32,11 +32,9 @@
 [% END %]
 
 [% IF progress %]
-  <div id="progress" class="row-fluid">
-    <div class="span12">
-      <h1>Building docker image</h1>
-      <p>It should take a couple of seconds. Please wait...</p>
-    </div>
+  <div id="progress">
+    <h1>Building docker image</h1>
+    <p>It should only take a couple of seconds. Please wait...</p>
   </div>
   [% STOP %]
 [% END %]
@@ -46,15 +44,10 @@
 [% END %]
 
 [% IF error %]
-  <div id="progress" class="row-fluid">
-    <div class="span12">
-      <h1>Ooops!</h1>
-      <p>
-        <a href="mailto:support@liveperl.us">We</a> are working hard to fix
-        the problem.
-      </p>
-      <p class="alert alert-danger">[% error %]<p>
-    </div>
+  <div id="error" class="alert alert-error">
+    <h1>Ooops!</h1>
+    <p>We are working hard to fix the problem. Try again later...</p>
+    <p>[% error %]<p>
   </div>
 </body>
 </html>

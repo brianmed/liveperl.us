@@ -60,6 +60,34 @@ form {
   border: 1px solid #000;
 }
 
+#error, #progress {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+}
+
+#error {
+  margin-top: -5em;
+  width: 80%;
+  left: 50%;
+  margin-left: -40%;
+}
+
+#progress {
+  color: #000;
+  margin-top: -4em;
+  -webkit-animation: loader 1s ease-out;
+  -webkit-animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes loader {
+  50% { top: 51%; opacity: 0.4; }
+}
+
 #output  {
   height: 300px;
   background: #eee;
