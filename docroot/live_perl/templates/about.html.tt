@@ -46,6 +46,8 @@
         <dd>It is running for maximum one hour.</dd>
         <dt>How many can run the tutorials at once?</dt>
         <dd>32.</dd>
+        <dt>Which version of perl is running?</dt>
+        <dd>LivePerl is running Perl [% c.stash('perl_version') %] and Mojolicious [% c.stash('mojo_version') %].</dd>
       </dl>
 
       <h2>Authors</h2>

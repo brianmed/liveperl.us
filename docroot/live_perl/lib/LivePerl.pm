@@ -34,7 +34,7 @@ sub startup {
     my $r = $self->routes;
     
     $r->get('/')->to('tutorial#start');
-    $r->get('/about')->to(template => 'about');
+    $r->get('/about')->to(template => 'about', perl_version => $^V, mojo_version => Mojolicious->VERSION);
     $r->get('/tutorials')->to(template => 'tutorials');
     $r->post('/tutorial/autosave')->to('tutorial#autosave')->name('autosave');
     $r->any('/tutorial/:name')->to('tutorial#go');
