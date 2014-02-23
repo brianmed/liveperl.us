@@ -29,10 +29,10 @@ sub startup {
     
     my $r = $self->routes;
     
-    $r->get('/')->to(controller => 'Tutorial', action => 'start');
-
-    $r->post('/tutorial/autosave')->to(controller => 'Tutorial', action => 'autosave');
-    $r->any('/tutorial/:file')->to(controller => 'Tutorial', action => 'go');
+    $r->get('/')->to('tutorial#start');
+    $r->get('/tutorials')->to(template => 'tutorials');
+    $r->post('/tutorial/autosave')->to('tutorial#autosave');
+    $r->any('/tutorial/:file')->to('tutorial#go');
 
     unless(grep { /docker/ } @DOCKER) {
       $self->log->error("Could not find docker executable!");

@@ -7,12 +7,6 @@ use Mojo::JSON qw(j);
 
 use Encode qw(encode decode);
 
-sub start {
-    my $self = shift;
-    
-    $self->render();
-}
-
 sub _docker {
     my $self = shift;
     my $cb = shift;

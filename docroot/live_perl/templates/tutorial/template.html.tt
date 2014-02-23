@@ -2,19 +2,17 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <meta HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
-    <meta HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
-    <meta http-Equiv="Expires" Content="0">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-    <script src="/jquery-1.9.1.js"></script>
-
-    <link rel="stylesheet" href="/codemirror-3.1/lib/codemirror.css">
-    <script src="/codemirror-3.1/lib/codemirror.js"></script>
-    <script src="/codemirror-3.1/mode/perl/perl.js"></script>
-    <link rel="stylesheet" href="/codemirror-3.1/doc/docs.css">
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
-    <script src="/bootstrap/js/bootstrap.js"></script>
+  <title>LivePerl</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/codemirror-3.1/lib/codemirror.css">
+  <link rel="stylesheet" href="/codemirror-3.1/doc/docs.css">
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+  <script src="/jquery-1.9.1.js"></script>
+  <script src="/bootstrap/js/bootstrap.js"></script>
+  <script src="/codemirror-3.1/lib/codemirror.js"></script>
+  <script src="/codemirror-3.1/mode/perl/perl.js"></script>
 </head>
 <body>
 
