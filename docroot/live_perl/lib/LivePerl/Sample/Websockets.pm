@@ -1,3 +1,12 @@
+package LivePerl::Sample::Websockets;
+use Mojo::Base 'LivePerl::Sample';
+
+has doc_url => 'http://mojolicio.us/perldoc/Mojolicious/Lite#WebSockets';
+has description => 'WebSocket applications have never been this simple before. Just receive messages by subscribing to events such as "json" in Mojo::Transaction::WebSocket with "on" in Mojolicious::Controller and return them with "send" in Mojolicious::Controller.';
+has title => 'WebSockets';
+
+1;
+__DATA__
 use Mojolicious::Lite;
 
 websocket '/echo' => sub {

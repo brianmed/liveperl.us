@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var $code = $('#code');
-    var $information = $('.information');
+    var $description = $('.description');
     var $masthead = $('.masthead');
     var $output = $('#output');
     var editor = CodeMirror($code[0], { lineNumbers: true });
@@ -17,6 +17,7 @@ $(document).ready(function() {
             $output.find('iframe').not('.hidden').remove();
             $output.children().not('iframe').remove();
             $reloader.removeClass('hidden').attr('data-ts', new Date());
+            $('form button[type="submit"]').text('Save');
         });
 
         $output.append($reloader);
@@ -32,7 +33,7 @@ $(document).ready(function() {
 
     // resize the editor and output blocks when the screen change size
     $(window).resize(function() {
-        var height = $(window).height() - $masthead.height() - $information.height() - 50;
+        var height = $(window).height() - $masthead.height() - $description.height() - 30;
         editor.setSize($code.width(), height);
         $output.height(height);
     }).resize();
@@ -40,7 +41,10 @@ $(document).ready(function() {
     // autosave the content of the editor
     editor.on("cursorActivity", function() {
         clearTimeout(timeout);
-        timeout = setTimeout(function() { $('#joy').submit(); }, 700);
+        timeout = setTimeout(function() {
+          $('form button[type="submit"]').text('Saving...');
+          $('#joy').submit();
+        }, 700);
     });
 
     editor.setValue(document.getElementById("the_code").value);

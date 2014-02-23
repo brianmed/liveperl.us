@@ -1,3 +1,12 @@
+package LivePerl::Sample::Http;
+use Mojo::Base 'LivePerl::Sample';
+
+has doc_url => 'http://mojolicio.us/perldoc/Mojolicious/Lite#HTTP_methods';
+has description => 'Routes can be restricted to specific request methods with different keywords.';
+has title => 'HTTP Methods';
+
+1;
+__DATA__
 #!/usr/local/bin/perl
 
 use Mojolicious::Lite;
