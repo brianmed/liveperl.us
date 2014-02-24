@@ -5,7 +5,9 @@ use File::Copy;
 
 my $repo = $ARGV[0];
 
-my ($unique) = $repo =~ m#bpmedley-(\d+)#;
+my ($unique) = $repo =~ m#bpmedley_(\d+)#;
+
+exit unless $unique;
 
 mkdir("/tmp/playground-$unique");
 copy("/opt/liveperl.us/bin/hello.txt", "/tmp/playground-$unique/lite.pl");
@@ -22,10 +24,11 @@ foreach my $line (@output) {
 }
 
 my $port = 0;
-foreach my $nbr (8000 .. 8029) {
+foreach my $nbr (8000 .. 8050) {
     $port = $nbr if !$ports{$nbr};
     last if $port;
 }
+exit if !$port;
 
 my @cmd = (
 	"/usr/bin/docker",
@@ -39,6 +42,8 @@ my @cmd = (
 	"-p",
 	"$port:3000",
 	"-d",
-	$repo
+    "--name",
+	$repo,
+    "liveperl_base",
 );
 system(@cmd);

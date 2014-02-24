@@ -10,8 +10,18 @@ my @containers = ();
 
 my @output = `/usr/bin/docker ps`;
 foreach my $line (@output) {
-    if ($line =~ m#^(\S+)\s.*?0.0.0.0:80\d+->3000/tcp#) {
-        push(@containers, $1);
+    if ($line =~ m#^(\S+)\s.*?0.0.0.0:80\d+->3000/tcp.*bpmedley_(\d+)#) {
+        my $container = $1;
+        my $unique = $2;
+
+        my $last_edit = time - (stat("/tmp/playground-$unique/lite.pl"))[10];
+
+        if (300 > $last_edit) {
+            warn("skipping: $line: $last_edit") if $ARGV[0];
+            next;
+        }
+
+        push(@containers, $container);
     }
 }
 
@@ -26,9 +36,9 @@ foreach my $container (@containers) {
         my $dt = DateTime::Format::ISO8601->parse_datetime($hash->[0]{Created});
         my $now = DateTime->now;
         my $whence = $now - $dt;
-        my $hours = $whence->in_units("hours");
+        my $minutes = $whence->in_units("minutes");
 
-        if (1 <= $hours) {
+        if (10 <= $minutes) {  # remember, with the last_edit feature 10 minutes has been fine
             system("/usr/bin/docker", "stop", $container);
             # system("/usr/bin/docker", "rm", $container);
             # system("/usr/bin/docker", "rmi", $hash->[0]{Image});
@@ -51,5 +61,6 @@ foreach my $container (@containers) {
 }
 
 foreach my $image (@images) {
+    next if "ed7aebb11f00" eq $image;   # our current base image
     system("/usr/bin/docker", "rmi", $image);
 }
