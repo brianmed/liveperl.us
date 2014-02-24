@@ -24,7 +24,7 @@ sub _docker {
         my $repo = $self->session("repo");
 
         foreach my $line ($self->docker('ps')) {
-            if ($line =~ m/^(\S+)\s+$repo.*0.0.0.0:(80\d+)/) {
+            if ($line =~ m/^(\S+)\s+.*0.0.0.0:(80\d+)$repo/) {
                 $self->stash->{_container} = $1;
                 $self->stash->{_port} = $2;
                 $self->stash->{_repo} = $repo;
@@ -33,15 +33,15 @@ sub _docker {
             }
         }
 
-        delete $self->session->{image};
+        delete $self->session->{repo};
     }
 
-    if (31 <= scalar $self->docker('ps')) {
+    if (50 <= scalar $self->docker('ps')) {
         my $msg = "No more slots<br>The max number of people using the app has been reached.<br>Please try again later.\n";
         return $self->render(inline => '[% INCLUDE tutorial/go.html.tt %]', previous => 0, error => $msg);
     }
 
-    my $repo = sprintf("bpmedley-%013d/liveperl", time . int(rand(1000)));
+    my $repo = sprintf("bpmedley_%013d_liveperl", time . int(rand(1000)));
     $self->session(repo => $repo);
 
     # Need a slot
@@ -70,7 +70,7 @@ sub _docker {
             $self->app->log->debug("Joy: " . join("", @joy));
 
             foreach my $line ($self->docker('ps')) {
-                if ($line =~ m/^(\S+)\s+$repo.*0.0.0.0:(80\d+)/) {
+                if ($line =~ m/^(\S+)\s+.*0.0.0.0:(80\d+).*$repo/) {
                     my $container = $1;
                     my $port = $2;
                     $self->stash->{_container} = $container;
@@ -115,7 +115,7 @@ sub _section {
         my $code = $self->param("code");
         my $output;
 
-        my ($unique) = $repo =~ m#bpmedley-(\d+)#;
+        my ($unique) = $repo =~ m#bpmedley_(\d+)#;
 
         $self->app->log->debug("repo: $repo: unique: $unique");
 
@@ -149,7 +149,7 @@ sub autosave {
 
     return $self->render(json => { ret => 0 }) unless $repo;
 
-    my ($unique) = $repo =~ m#bpmedley-(\d+)#;
+    my ($unique) = $repo =~ m#bpmedley_(\d+)#;
 
     $self->app->log->debug("autosave: repo: $repo: unique: $unique");
     spurt(encode("UTF-8", $code), "/tmp/playground-$unique/lite.pl");
