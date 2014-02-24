@@ -1,8 +1,0 @@
-% my $self = shift;
-<!DOCTYPE html>
-<html>
-<head></head>
-<body>
-<%= $self->render(partial => 1, template => '23') %><%= $self->content %>
-</body>
-</html>
