@@ -24,7 +24,7 @@ sub _docker {
         my $repo = $self->session("repo");
 
         foreach my $line ($self->docker('ps')) {
-            if ($line =~ m/^(\S+)\s+.*0.0.0.0:(80\d+)$repo/) {
+            if ($line =~ m/^(\S+)\s+.*0.0.0.0:(80\d+).*$repo/) {
                 $self->stash->{_container} = $1;
                 $self->stash->{_port} = $2;
                 $self->stash->{_repo} = $repo;
