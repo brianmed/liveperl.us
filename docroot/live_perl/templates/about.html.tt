@@ -18,6 +18,7 @@
       <ul class="nav masthead-nav">
         <li>[% h.link_to('Home', '/') %]</li>
         <li>[% h.link_to('Tutorials', '/tutorials') %]</li>
+            <li>[% h.link_to('Pearls', 'http://pearls.liveperl.us') %]</li>
         <li class="active">[% h.link_to('About', '/about') %]</li>
       </ul>
     </div>
@@ -43,11 +44,11 @@
           module. Easy as a breeze.
         </dd>
         <dt>How long is the test server up and running?</dt>
-        <dd>It is running for maximum one hour.</dd>
+        <dd>Ten minutes after your last edit.</dd>
         <dt>How many can run the tutorials at once?</dt>
-        <dd>32.</dd>
+        <dd>50.</dd>
         <dt>Which version of perl is running?</dt>
-        <dd>LivePerl is running Perl [% c.stash('perl_version') %] and Mojolicious [% c.stash('mojo_version') %].</dd>
+        <dd>LivePerl is running Perl 5.16.3 and Mojolicious 4.84.</dd>
       </dl>
 
       <h2>Authors</h2>

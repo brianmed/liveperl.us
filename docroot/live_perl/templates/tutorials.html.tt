@@ -18,6 +18,7 @@
       <ul class="nav masthead-nav">
         <li>[% h.link_to('Home', '/') %]</li>
         <li class="active">[% h.link_to('Tutorials', '/tutorials') %]</li>
+            <li>[% h.link_to('Pearls', 'http://pearls.liveperl.us') %]</li>
         <li>[% h.link_to('About', '/about') %]</li>
       </ul>
     </div>

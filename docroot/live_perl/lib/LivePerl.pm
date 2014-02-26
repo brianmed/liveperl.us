@@ -26,6 +26,7 @@ sub startup {
     $self->plugin("Config");
     $self->plugin(AccessLog => {log => $self->home->rel_file('log/access.log'), format => '%h %l %u %t "%r" %>s %b %D "%{Referer}i" "%{User-Agent}i"'});
     $self->plugin(tt_renderer => {template_options => {CACHE_SIZE => 0, COMPILE_EXT => undef, COMPILE_DIR => "/tmp/liveperl.us/templates"}});
+    $self->plugin('HeaderCondition');
 
     $self->renderer->default_handler('tt');
     $self->sessions->cookie_name("liveperl_mojolicious");
@@ -33,8 +34,13 @@ sub startup {
     
     my $r = $self->routes;
     
+    $r->get('/')->over(headers => {Host => qr/pearls\.liveperl\.us/})->to(controller => "Pearls", action => "start");
+    $r->get('/pearls/run')->over(headers => {Host => qr/pearls\.liveperl\.us/})->to(controller => "Pearls", action => "run");
+    $r->get('/pearls/clam/:unique')->over(headers => {Host => qr/pearls\.liveperl\.us/})->to(controller => "Pearls", action => "open");
+    $r->post('/pearls/autosave')->over(headers => {Host => qr/pearls\.liveperl\.us/})->to(controller => "Pearls", action => "autosave");
+
     $r->get('/')->to('tutorial#start');
-    $r->get('/about')->to(template => 'about', perl_version => $^V, mojo_version => Mojolicious->VERSION);
+    $r->get('/about')->to(template => 'about');
     $r->get('/tutorials')->to(template => 'tutorials');
     $r->post('/tutorial/autosave')->to('tutorial#autosave')->name('autosave');
     $r->any('/tutorial/:name')->to('tutorial#go');
