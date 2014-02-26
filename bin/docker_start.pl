@@ -34,7 +34,7 @@ my @cmd = (
 	"/usr/bin/docker",
 	"run",
     "-m", 
-    "100m",
+    "70m",
     "-c",
     "15",
 	"-v",

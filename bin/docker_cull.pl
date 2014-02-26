@@ -16,7 +16,7 @@ foreach my $line (@output) {
 
         my $last_edit = time - (stat("/tmp/playground-$unique/lite.pl"))[10];
 
-        if (300 > $last_edit) {
+        if (600 > $last_edit) {
             warn("skipping: $line: $last_edit") if $ARGV[0];
             next;
         }
@@ -61,6 +61,6 @@ foreach my $container (@containers) {
 }
 
 foreach my $image (@images) {
-    next if "ed7aebb11f00" eq $image;   # our current base image
+    next if "d5f67fd405c7" eq $image;   # our current base image
     system("/usr/bin/docker", "rmi", $image);
 }
