@@ -105,6 +105,8 @@ form {
   border: 1px solid black;
 }
 
+#output pre { background: transparent; border: 0; }
+
 
 @media (min-width: 768px) {
   .masthead-brand {

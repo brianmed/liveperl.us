@@ -18,7 +18,7 @@ $(document).ready(function() {
     $('#joy').submit(function(e) {
         e.preventDefault();
         $('form [name="code"]').val(editor.getValue());
-        $.post(this.action, $(this).serialize(), function() { $('#save').text('Save') });
+        $.post(this.action, $(this).serialize(), function() { $('#save').hide() });
     });
 
     $("#run").click(function() {
@@ -29,7 +29,7 @@ $(document).ready(function() {
     editor.on("update", function() {
         clearTimeout(timeout);
         timeout = setTimeout(function() {
-          $('#save').text('Saving...');
+          $('#save').show();
           $('#joy').submit();
         }, 1000);
     });

@@ -48,9 +48,22 @@ sub start {
         $code = slurp("/tmp/playground-$unique/code/lite.pl");
     }
 
+    if ($self->flash("info")) {
+        $self->stash("info", $self->flash("info"));
+    }
+
     my $fortune = $self->_fortune;
     my $clam = $self->url_for("/pearls/clam/$unique")->to_abs;
     return($self->render("pearls/start", fortune => $fortune, unique => $unique, code => $code, clam => $clam));
+}
+
+sub start_over {
+    my $self = shift;
+
+    delete($self->session->{pearls});
+
+    my $url = $self->url_for('/');
+    return($self->redirect_to($url));
 }
 
 sub run {
@@ -59,7 +72,7 @@ sub run {
     my $pearls = $self->session("pearls");
 
     if (!$pearls) {
-        $self->render(json => { error => 1 });
+        $self->render(json => { error => 1, msg => "Session expired" });
     }
 
     my ($unique) = $pearls =~ m#liveperl_(\d+)_pearls#;
@@ -68,6 +81,8 @@ sub run {
     {
         local $/;
         $output = `/usr/bin/sudo /opt/liveperl.us/bin/docker_run.pl $pearls`; 
+        my $pod = `/opt/perl-5.16.3/bin/pod2text /tmp/playground-$unique/code/lite.pl`; 
+        $output = "$pod\n\n$output" if $pod && $pod =~ m/\w/;
     }
 
     spurt(j({ output => $output}), "/tmp/playground-$unique/json/output.json");
@@ -86,6 +101,7 @@ sub open {
     }
 
     if (!-f "/tmp/playground-$unique/code/lite.pl" || !-f "/tmp/playground-$unique/json/output.json") {
+        $self->flash(info => "No code or output found.  Did you run first?");
         my $url = $self->url_for('/');
         return($self->redirect_to($url));
     }

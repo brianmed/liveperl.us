@@ -1,5 +1,15 @@
 #!/usr/local/bin/perl
 
+=head1 NAME
+
+    My own pearl
+
+=head1 DESCRIPTION
+
+    Your description here
+
+=cut
+
 use strict;
 use warnings;
 

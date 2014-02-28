@@ -56,6 +56,12 @@
   [% STOP %]
 [% END %]
 
+[% IF info %]
+  <div id="info" class="alert alert-info">
+    <p>[% info %]<p>
+  </div>
+[% END %]
+
   <!-- [% unique %] -->
 
   <form id="joy" action="[% h.url_for('/pearls/autosave') %]" method="post">
@@ -66,11 +72,12 @@
       </div>
       <div class="span2 text-right actions">
       [% UNLESS from_clam %]
-        <button id=save class="btn btn-mini" type="submit">Save</button>
+        <button id=save class="btn btn-mini">Saving</button>
+        <a class="btn btn-mini" href="[% h.url_for('/pearls/start_over') %]">New</a>
         <button id=run class="btn btn-mini">Run</button>
         <a class="btn btn-mini" href="[% clam %]">Clam</a>
       [% ELSE %]
-        <a class="btn btn-mini" href="[% h.url_for('/') %]" target="_blank">New</a>
+        <a class="btn btn-mini" href="[% h.url_for('/pearls/start_over') %]" target="_blank">New</a>
       [% END %]
       </div>
     </div>
