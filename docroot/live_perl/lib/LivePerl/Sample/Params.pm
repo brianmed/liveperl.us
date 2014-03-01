@@ -30,6 +30,22 @@ __DATA__
  
 @@ slash.html.ep
 
+% layout "bootstrap";
+
+<form role="form" method="post">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" placeholder="Enter email" name=email value="<%== $email %>">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" placeholder="Password" name=password value="<%== $password %>">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+@@ layouts/bootstrap.html.ep
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -71,17 +87,7 @@ __DATA__
         </div>
       </div>
 
-<form role="form" method="post">
-  <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" placeholder="Enter email" name=email value="<%== $email %>">
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" placeholder="Password" name=password value="<%== $password %>">
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
+      <%= content %>
 
     <br>
 
@@ -116,4 +122,3 @@ __DATA__
     <!-- Placed at the end of the document so the pages load faster -->
   </body>
 </html>
-

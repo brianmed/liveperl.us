@@ -42,6 +42,37 @@ __DATA__
  
 @@ slash.html.ep
 
+% layout "bootstrap";
+
+<div class="row marketing">
+  <div class="col-lg-6">
+    <h4>Quality</h4>
+    <p>A continued emphasis on well-documented, well-tested code; Using best practices like lexical file handles and three-argument open.</p>
+
+    <h4>Errors: less is more</h4>
+    <p>Using strict and warnings. What was once considered optional is no longer. The foundation of modern development starts with a much more restricted/predictable vocabulary that helps reduce developer error.</p>
+
+    <h4>Recent Perl</h4>
+    <p>Using a version of Perl greater than 5.8 and being in step with the increasing rate of change to Perl core. Perl 5.10 had a influx of new features like say, the smart match operator, and the switch statement. Perl is up to 5.18 at the time of this writing.</p>
+  </div>
+
+  <div class="col-lg-6">
+    <h4>Advertising</h4>
+    <p>A concerted effort to highlight Perl in social/Internet media, such as this Quora answer!.</p>
+
+     <!-- **** NOTE the programmatic stash **** -->
+
+     % foreach my $sub (@$sub_headings) {
+     %     my ($subheading) = keys(%$sub);
+     %     my ($text) = values(%$sub);
+           <h4><%= $subheading %></h4>
+           <p><%= $text %></p>
+     % }
+  </div>
+</div>
+
+@@ layouts/bootstrap.html.ep
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -63,7 +94,6 @@ __DATA__
   </head>
 
   <body>
-
     <div class="container">
       <div class="header">
         <ul class="nav nav-pills pull-right">
@@ -77,31 +107,8 @@ __DATA__
         <h1>Grab some Modern Perl today</h1>
         <p class="lead">Modern Perl is one way to describe the way the world's most effective Perl 5 programmers work. They use language idioms. They take advantage of the CPAN. They show good taste and craft to write powerful, maintainable, scalable, concise, and effective code.</p>
       </div>
-
-      <div class="row marketing">
-        <div class="col-lg-6">
-          <h4>Quality</h4>
-          <p>A continued emphasis on well-documented, well-tested code; Using best practices like lexical file handles and three-argument open.</p>
-
-          <h4>Errors: less is more</h4>
-          <p>Using strict and warnings. What was once considered optional is no longer. The foundation of modern development starts with a much more restricted/predictable vocabulary that helps reduce developer error.</p>
-
-          <h4>Recent Perl</h4>
-          <p>Using a version of Perl greater than 5.8 and being in step with the increasing rate of change to Perl core. Perl 5.10 had a influx of new features like say, the smart match operator, and the switch statement. Perl is up to 5.18 at the time of this writing.</p>
-        </div>
-
-        <div class="col-lg-6">
-          <h4>Advertising</h4>
-          <p>A concerted effort to highlight Perl in social/Internet media, such as this Quora answer!.</p>
-
-           % foreach my $sub (@$sub_headings) {
-           %     my ($subheading) = keys(%$sub);
-           %     my ($text) = values(%$sub);
-                 <h4><%= $subheading %></h4>
-                 <p><%= $text %></p>
-           % }
-        </div>
-      </div>
+      
+      <%= content %>
 
       <div class="footer">
         <p>Copied 'n pasted</a></p>
@@ -128,8 +135,5 @@ __DATA__
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-  </body>
+</body>
 </html>

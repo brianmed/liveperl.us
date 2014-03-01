@@ -54,6 +54,55 @@ __DATA__
  
 @@ slash.html.ep
 
+% layout "bootstrap";
+
+
+<div class="jumbotron">
+    <h1>Grab some Modern Perl today</h1>
+    <p class="lead">Modern Perl is one way to describe the way the world's most effective Perl 5 programmers work. They use language idioms. They take advantage of the CPAN. They show good taste and craft to write powerful, maintainable, scalable, concise, and effective code.</p>
+</div>
+
+<div class="row marketing">
+    <div class="col-lg-6">
+        Submit to try an authenticate.  The name carries over from the "Session" tutorial.
+    </div>
+</div>
+
+<form role="form" method="post" action="/auth">
+  <div class="form-group">
+    <label for="exampleName">Name</label>
+    <input type="text" class="form-control" placeholder="Enter a person" name=person value="<%== $person %>">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+@@ denied.html.ep
+
+% layout "bootstrap";
+
+<div class="jumbotron">
+    <h1>You are not Bender.</h1>
+</div>
+
+<form role="form" method="post" action="/auth">
+  <div class="form-group">
+    <label for="exampleName">Name</label>
+    <input type="text" class="form-control" placeholder="Enter a person" name=person value="<%== $person %>">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+@@ auth.html.ep
+
+% layout "bootstrap";
+
+<div class="jumbotron">
+    <h1>Hooray!</h1>
+    <p>You are bender.</p>
+</div>
+
+@@ layouts/bootstrap.html.ep
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -85,24 +134,9 @@ __DATA__
         <h3 class="text-muted"><%= $project_name %></h3>
       </div>
 
-      <div class="jumbotron">
-        <h1>Grab some Modern Perl today</h1>
-        <p class="lead">Modern Perl is one way to describe the way the world's most effective Perl 5 programmers work. They use language idioms. They take advantage of the CPAN. They show good taste and craft to write powerful, maintainable, scalable, concise, and effective code.</p>
-      </div>
 
-      <div class="row marketing">
-        <div class="col-lg-6">
-            Submit to try an authenticate.  The name carries over from the "Session" tutorial.
-        </div>
-      </div>
+<%= content %>
 
-<form role="form" method="post" action="/auth">
-  <div class="form-group">
-    <label for="exampleName">Name</label>
-    <input type="text" class="form-control" placeholder="Enter a person" name=person value="<%== $person %>">
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
    <br>
    
       <div class="footer">
@@ -129,118 +163,6 @@ __DATA__
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-  </body>
-</html>
-
-@@ denied.html.ep
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Narrow Jumbotron Template for Bootstrap</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="/bootstrap/jumbotron-narrow.css" rel="stylesheet">
-
-    <script type="text/javascript" src="/bootstrap/js/jquery-1.11.0.min.js"></script>
-
-    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
-  </head>
-
-  <body>
-
-    <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li class="active"><a href="/">Home</a></li>
-          <li><a href="#myModal" data-toggle="modal">About</a></li>
-        </ul>
-        <h3 class="text-muted"><%= $project_name %></h3>
-      </div>
-
-      <div class="jumbotron">
-        <h1>You are not Bender.</h1>
-      </div>
-
-<form role="form" method="post" action="/auth">
-  <div class="form-group">
-    <label for="exampleName">Name</label>
-    <input type="text" class="form-control" placeholder="Enter a person" name=person value="<%== $person %>">
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
-   <br>
-   
-      <div class="footer">
-        <p>Copied 'n pasted</a></p>
-        <p><a href="http://modernperlbooks.com/books/modern_perl/">Modern Perl</a></p>
-        <p><a href="http://www.quora.com/Perl/What-is-modern-Perl">Quora</a></p>
-      </div>
-
-    </div> <!-- /container -->
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-  </body>
-</html>
-
-@@ auth.html.ep
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Narrow Jumbotron Template for Bootstrap</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="/bootstrap/jumbotron-narrow.css" rel="stylesheet">
-
-    <script type="text/javascript" src="/bootstrap/js/jquery-1.11.0.min.js"></script>
-
-    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
-  </head>
-
-  <body>
-
-    <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li class="active"><a href="/">Home</a></li>
-          <li><a href="#myModal" data-toggle="modal">About</a></li>
-        </ul>
-        <h3 class="text-muted"><%= $project_name %></h3>
-      </div>
-
-      <div class="jumbotron">
-        <h1>Hooray!</h1>
-        <p>You are bender.</p>
-      </div>
-   
-      <div class="footer">
-        <p>Copied 'n pasted</a></p>
-        <p><a href="http://modernperlbooks.com/books/modern_perl/">Modern Perl</a></p>
-        <p><a href="http://www.quora.com/Perl/What-is-modern-Perl">Quora</a></p>
-      </div>
-
-    </div> <!-- /container -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

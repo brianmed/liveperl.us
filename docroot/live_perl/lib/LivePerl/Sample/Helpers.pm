@@ -37,6 +37,30 @@ __DATA__
  
 @@ slash.html.ep
 
+% layout "bootstrap";
+
+<!-- Note the whois in the <p> -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Modern Perl</h4>
+      </div>
+      <div class="modal-body">
+        <p>We ☃ Mojolicious and Modern Perl!!</p>
+        <p><%= whois %></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+@@ layouts/bootstrap.html.ep
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -87,23 +111,7 @@ __DATA__
 
     </div> <!-- /container -->
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Modern Perl</h4>
-      </div>
-      <div class="modal-body">
-        <p>We ☃ Mojolicious and Modern Perl!!</p>
-        <p><%= whois %></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    <%= content %>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

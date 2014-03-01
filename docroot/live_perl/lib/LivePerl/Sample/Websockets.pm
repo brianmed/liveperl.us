@@ -15,7 +15,7 @@ websocket '/echo' => sub {
   my $self = shift;
   $self->on(json => sub {
     my ($self, $hash) = @_;
-    $hash->{msg} = "echo: $hash->{msg}";
+    $hash->{msg} = "echo: $hash->{msg}: " . scalar(localtime);
     $self->send({json => $hash});
   });
 };
@@ -38,6 +38,25 @@ __DATA__
 
 @@ slash.html.ep
 
+% layout "bootstrap";
+
+    %= javascript begin
+      var ws = new WebSocket('<%= url_for('echo')->to_abs %>');
+      ws.onmessage = function (event) {
+        $('#echoTbl tr:last').after('<tr><td>' + JSON.parse(event.data).msg + '</td></tr>');
+      };
+    % end
+
+    <script>
+        $( document ).ready(function() {
+        $("#echoBtn").click(function(e) {
+            ws.send(JSON.stringify({msg: $("#echoTxt").val()}));
+        });
+        });
+    </script>
+
+@@ layouts/bootstrap.html.ep
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -56,20 +75,8 @@ __DATA__
     <script type="text/javascript" src="/bootstrap/js/jquery-1.11.0.min.js"></script>
 
     <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
-    %= javascript begin
-      var ws = new WebSocket('<%= url_for('echo')->to_abs %>');
-      ws.onmessage = function (event) {
-        $('#echoTbl tr:last').after('<tr><td>' + JSON.parse(event.data).msg + '</td></tr>');
-      };
-    % end
 
-    <script>
-        $( document ).ready(function() {
-        $("#echoBtn").click(function(e) {
-            ws.send(JSON.stringify({msg: $("#echoTxt").val()}));
-        });
-        });
-    </script>
+<%= content %>
 
   </head>
 

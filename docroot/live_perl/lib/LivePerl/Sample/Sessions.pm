@@ -33,6 +33,18 @@ __DATA__
  
 @@ slash.html.ep
 
+% layout "bootstrap";
+
+<form role="form" method="post">
+  <div class="form-group">
+    <label for="exampleName">Name</label>
+    <input type="text" class="form-control" placeholder="Enter a person" name=person value="<%== $person %>">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+@@ layouts/bootstrap.html.ep
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -75,13 +87,8 @@ __DATA__
         </div>
       </div>
 
-<form role="form" method="post">
-  <div class="form-group">
-    <label for="exampleName">Name</label>
-    <input type="text" class="form-control" placeholder="Enter a person" name=person value="<%== $person %>">
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
+<%= content %>
+
    <br>
    
       <div class="footer">
