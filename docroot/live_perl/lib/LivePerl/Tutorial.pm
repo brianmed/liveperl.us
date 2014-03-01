@@ -141,6 +141,34 @@ sub go {
     );
 }
 
+sub logs {
+    my $self = shift;
+
+    my $repo = $self->session("repo");
+
+    return $self->render(json => { output => "No session data found" }) unless $repo;
+
+    my ($unique) = $repo =~ m#bpmedley_(\d+)#;
+
+    my (@output, $container);
+    foreach my $line ($self->docker('ps')) {
+        if ($line =~ m/^(\w+).*$unique/) {
+            $container = $1;
+        }
+    }
+
+    return $self->render(json => { output => "No container found" }) unless $container;
+
+    foreach my $line ($self->docker('logs', $container)) {
+        push(@output, $line);
+    }
+
+    my $i = $#output;
+    @output = @output[$i - 10 .. $i] if $i >= 10;
+
+    return $self->render(json => { output => join("\n", @output) });
+}
+
 sub autosave {
     my $self = shift;
 

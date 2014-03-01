@@ -2,11 +2,11 @@
 
 =head1 NAME
 
-    My own pearl
+My own pearl
 
 =head1 DESCRIPTION
 
-    Your description here
+Your description here
 
 =cut
 

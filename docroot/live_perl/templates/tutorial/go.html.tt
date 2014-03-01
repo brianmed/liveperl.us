@@ -6,14 +6,20 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
   <link rel="stylesheet" href="/codemirror-3.1/lib/codemirror.css">
   <link rel="stylesheet" href="/codemirror-3.1/doc/docs.css">
-  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
   <link rel="stylesheet" href="/css/editor.css">
   <script src="/js/jquery-1.9.1.js"></script>
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
   <script src="/codemirror-3.1/lib/codemirror.js"></script>
   <script src="/codemirror-3.1/mode/perl/perl.js"></script>
   <script src="/js/editor.js"></script>
+  <style>
+  #logModal {
+    width: 900px;
+  }
+  </style>
 </head>
 <body>
 <div class="container-fluid">
@@ -64,8 +70,10 @@
         <p>[% c.sample.description() %]</p>
       </div>
       <div class="span2 text-right actions">
-        <button class="btn btn-mini" type="submit">Save</button>
+        <button id=save class="btn btn-mini" type="submit">Saving</button>
+        <button class="btn btn-mini btn-lg" id="btnLogs" >Logs</button>
         <a class="btn btn-mini" href="[% h.url_for('/').to_abs().port(port || 80) %]" target="_blank">Open</a>
+        <!-- <input type="file" title="Upload" class="btn-mini"> -->
         <a class="btn btn-mini" href="[% c.sample.doc_url() %]" target="_blank">Help</a>
       </div>
     </div>
@@ -82,5 +90,23 @@
     </form>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="logModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body" id=logs>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

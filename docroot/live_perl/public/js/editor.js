@@ -17,7 +17,7 @@ $(document).ready(function() {
             $output.find('iframe').not('.hidden').remove();
             $output.children().not('iframe').remove();
             $reloader.removeClass('hidden');
-            $('form button[type="submit"]').text('Save');
+            $('#save').hide();
             initialized = true;
         });
 
@@ -43,9 +43,13 @@ $(document).ready(function() {
     editor.on("update", function() {
         clearTimeout(timeout);
         timeout = setTimeout(function() {
-          $('form button[type="submit"]').text('Saving...');
+          $('#save').show();
           if(initialized) $('#joy').submit();
         }, 1000);
+    });
+
+    $("#btnLogs").click(function() {
+        $.getJSON("/tutorial/logs", function(output) { $("#logs").html("<pre>" + output.output + "</pre>"); $("#logModal").modal("show") });
     });
 
     editor.setValue($('form [name="code"]').val());

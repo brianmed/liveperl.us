@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /tutorial/autosave
 Disallow: /tutorial/hello
 Disallow: /tutorial/stash
 Disallow: /tutorial/params

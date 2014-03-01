@@ -61,6 +61,6 @@ foreach my $container (@containers) {
 }
 
 foreach my $image (@images) {
-    next if "d5f67fd405c7" eq $image;   # our current base image
+    next if "0e58ca77c0e5" eq $image;   # our current base image
     system("/usr/bin/docker", "rmi", $image);
 }

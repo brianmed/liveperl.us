@@ -2,21 +2,6 @@ package LivePerl;
 
 use Mojo::Base 'Mojolicious';
 
-$ENV{PATH} ||= '';
-my @DOCKER;
-
-for my $path (split /:/, $ENV{PATH}) {
-  next unless -x "$path/docker";
-  push @DOCKER, "$path/docker";
-  last;
-}
-
-for my $path (split /:/, $ENV{PATH}) {
-  next unless @DOCKER and -x "$path/sudo";
-  unshift @DOCKER, "$path/sudo";
-  last;
-}
-
 # This method will run once at server start
 sub startup {
     my $self = shift;
@@ -40,28 +25,19 @@ sub startup {
     $r->get('/pearls/clam/:unique')->over(headers => {Host => qr/pearls\.liveperl\.us/})->to(controller => "Pearls", action => "open");
     $r->post('/pearls/autosave')->over(headers => {Host => qr/pearls\.liveperl\.us/})->to(controller => "Pearls", action => "autosave");
 
-    $r->get('/')->to('tutorial#start');
+    $r->get('/')->to(template => "tutorial/start");
     $r->get('/about')->to(template => 'about');
     $r->get('/tutorials')->to(template => 'tutorials');
-    $r->post('/tutorial/autosave')->to('tutorial#autosave')->name('autosave');
+    $r->post('/tutorial/autosave')->to(controller => "Tutorial", action => "autosave");
+    $r->get("/tutorial/logs")->to(controller => "Tutorial", action => "logs");
     $r->any('/tutorial/:name')->to('tutorial#go');
-
-    unless(grep { /docker/ } @DOCKER) {
-      $self->log->error("Could not find docker executable!");
-    }
 
     $self->helper(docker => sub {
         my($c, @command) = @_;
         my @output;
 
-        return @output unless @DOCKER;
-
-        $c->app->log->debug("open -| @DOCKER @command");
-        open my $DOCKER, '-|', @DOCKER, @command;
-        while(<$DOCKER>) {
-          chomp;
-          push @output, $_;
-        }
+        $c->app->log->debug("docker: /usr/bin/sudo /usr/bin/docker @command 2>&1");
+        @output = `/usr/bin/sudo /usr/bin/docker @command 2>&1`;
 
         return @output;
     });
