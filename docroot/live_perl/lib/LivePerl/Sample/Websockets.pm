@@ -7,6 +7,8 @@ has title => 'WebSockets';
 
 1;
 __DATA__
+#!/usr/local/bin/perl
+
 use Mojolicious::Lite;
 
 websocket '/echo' => sub {
@@ -18,24 +20,121 @@ websocket '/echo' => sub {
   });
 };
 
-get '/' => 'index';
+get '/' => sub {
+    my $self = shift;
+ 
+    # We're dynamic 'yo
+    my $project_name = "LivePerl";
+
+    $self->render(template => "slash", project_name => $project_name);
+};
+
+
+push(@{app->static->paths}, '/src');
 
 app->start;
+
 __DATA__
 
-@@ index.html.ep
+@@ slash.html.ep
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Echo</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Narrow Jumbotron Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/bootstrap/jumbotron-narrow.css" rel="stylesheet">
+
+    <script type="text/javascript" src="/bootstrap/js/jquery-1.11.0.min.js"></script>
+
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
     %= javascript begin
       var ws = new WebSocket('<%= url_for('echo')->to_abs %>');
       ws.onmessage = function (event) {
-        document.body.innerHTML += JSON.parse(event.data).msg;
-      };
-      ws.onopen = function (event) {
-        ws.send(JSON.stringify({msg: 'I ♥ Mojolicious!'}));
+        $('#echoTbl tr:last').after('<tr><td>' + JSON.parse(event.data).msg + '</td></tr>');
       };
     % end
+
+    <script>
+        $( document ).ready(function() {
+        $("#echoBtn").click(function(e) {
+            ws.send(JSON.stringify({msg: $("#echoTxt").val()}));
+        });
+        });
+    </script>
+
   </head>
+
+  <body>
+
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="/">Home</a></li>
+          <li><a href="#myModal" data-toggle="modal">About</a></li>
+        </ul>
+        <h3 class="text-muted"><%= $project_name %></h3>
+      </div>
+
+      <div class="jumbotron">
+        <h1>Grab some Modern Perl today</h1>
+        <p class="lead">Modern Perl is one way to describe the way the world's most effective Perl 5 programmers work. They use language idioms. They take advantage of the CPAN. They show good taste and craft to write powerful, maintainable, scalable, concise, and effective code.</p>
+      </div>
+
+      <div class="row marketing">
+        <div class="col-lg-6">
+        </div>
+      </div>
+
+<form class="form-inline" role="form">
+  <button type="button" id="echoBtn" class="btn btn-primary">Echo</button>
+  <div class="form-group">
+  <label class="sr-only" for="echoTxt">Echo text</label>
+    <input type="text" class="form-control" id="echoTxt" value="I ♥ Mojolicious!">
+  </div>
+</form>
+
+    <br>
+    
+    <table class="table table-striped" id="echoTbl">
+    <tr><th>Message</th></tr>
+</table>
+
+      <div class="footer">
+        <p>Copied 'n pasted</a></p>
+        <p><a href="http://modernperlbooks.com/books/modern_perl/">Modern Perl</a></p>
+        <p><a href="http://www.quora.com/Perl/What-is-modern-Perl">Quora</a></p>
+      </div>
+
+    </div> <!-- /container -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Modern Perl</h4>
+      </div>
+      <div class="modal-body">
+        <p>We ☃ Mojolicious and Modern Perl!!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+  </body>
 </html>

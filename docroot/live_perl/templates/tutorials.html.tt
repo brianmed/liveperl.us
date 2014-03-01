@@ -38,11 +38,11 @@
         <li><a href="/tutorial/stash">Stash and Templates</a></li>
         <li><a href="/tutorial/params">GET/POST Parameters</a></li>
         <li><a href="/tutorial/placeholders">Placeholders</a></li>
-        <li><a href="/tutorial/http">HTTP Methods</a></li>
+        <!-- <li><a href="/tutorial/http">HTTP Methods</a></li> -->
         <li><a href="/tutorial/helpers">Helpers</a></li>
         <li><a href="/tutorial/sessions">Sessions</a></li>
-        <li><a href="/tutorial/websockets">WebSockets</a></li>
         <li><a href="/tutorial/under">Under</a></li>
+        <li><a href="/tutorial/websockets">WebSockets</a></li>
       </ul>
     </div>
   </div>
