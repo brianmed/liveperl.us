@@ -17,7 +17,7 @@ any '/' => sub {
     # We're dynamic 'yo
     my $project_name = "LivePerl";
  
-    my ($person) = $self->param(["person"]);
+    my $person = $self->param("person") // "";
     
     $self->render(template => "slash", project_name => $project_name, person => $person);
 
@@ -29,19 +29,22 @@ get '/:person' => sub {
     # We're dynamic 'yo
     my $project_name = "LivePerl";
 
-    my $person  = $self->param("person");
+    my $person  = $self->param("person") // "";
+    
     $self->render(template => "person", person => $person, project_name => $project_name);
 };
 
 push(@{app->static->paths}, '/src');
 
 app->start;
- 
+
 __DATA__
  
 @@ slash.html.ep
 
 % layout "bootstrap";
+
+<!-- The navigaiton changes when we enter a name. -->
 
 <div class="container">
   <div class="header">
@@ -56,13 +59,8 @@ __DATA__
   </div>
 
 <div class="jumbotron">
-  <h1>Grab some Modern Perl today</h1>
-  <p class="lead">Modern Perl is one way to describe the way the world's most effective Perl 5 programmers work. They use language idioms. They take advantage of the CPAN. They show good taste and craft to write powerful, maintainable, scalable, concise, and effective code.</p>
-</div>
-
-<div class="row marketing">
-  <div class="col-lg-6">
-  </div>
+  <h1>Yay Perl!</h1>
+  <p class="lead">We ♥ Perl.</p>
 </div>
 
 <form role="form" method="post">
@@ -72,6 +70,8 @@ __DATA__
   </div>
   <button type="submit" class="btn btn-default">Submit</button>
 </form>
+
+</div> <!-- /container -->
 
 @@ person.html.ep
 
@@ -93,6 +93,8 @@ __DATA__
     <h1><%== $person %></h1>
     <p class="lead">Your name is the best one.</p>
 </div>
+
+</div> <!-- /container -->
 
 @@ layouts/bootstrap.html.ep
 
@@ -119,16 +121,6 @@ __DATA__
   <body>
   
   <%= content %>
-  
-   <br>
-   
-      <div class="footer">
-        <p>Copied 'n pasted</a></p>
-        <p><a href="http://modernperlbooks.com/books/modern_perl/">Modern Perl</a></p>
-        <p><a href="http://www.quora.com/Perl/What-is-modern-Perl">Quora</a></p>
-      </div>
-
-    </div> <!-- /container -->
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -147,8 +139,5 @@ __DATA__
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-  </body>
+</body>
 </html>

@@ -19,18 +19,36 @@ any '/' => sub {
 
     my ($email, $password) = $self->param(["email", "password"]);
     
-    $self->render(template => "slash", project_name => $project_name, email => $email, password => $password);
+    my $submitted = 0;
+    if ($email || $password) {
+        $submitted = 1;
+    }
+    
+    $self->render(template => "slash", project_name => $project_name, email => $email, password => $password, submitted => $submitted);
 };
 
 push(@{app->static->paths}, '/src');
 
 app->start;
- 
+
+# o Try changing the placeholder text for either Email or Passsword
+# o Did you find the easter egg: hint it's About the password.
+# * Can you change the visual feedback when a form submits?
+
+# This template uses layouts.  A layout allows us to wrap generated 
+# content into a HTML skeleton.
+
 __DATA__
  
 @@ slash.html.ep
 
 % layout "bootstrap";
+
+<!-- See how we use $email and $password -->
+
+% if ($submitted) {
+<kbd>Submitted</kbd>
+% }
 
 <form role="form" method="post">
   <div class="form-group">
@@ -50,10 +68,7 @@ __DATA__
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Narrow Jumbotron Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -78,24 +93,11 @@ __DATA__
       </div>
 
       <div class="jumbotron">
-        <h1>Grab some Modern Perl today</h1>
-        <p class="lead">Modern Perl is one way to describe the way the world's most effective Perl 5 programmers work. They use language idioms. They take advantage of the CPAN. They show good taste and craft to write powerful, maintainable, scalable, concise, and effective code.</p>
-      </div>
-
-      <div class="row marketing">
-        <div class="col-lg-6">
-        </div>
+        <h1>Yay Perl!</h1>
+        <p class="lead">We ♥ Perl.</p>
       </div>
 
       <%= content %>
-
-    <br>
-
-      <div class="footer">
-        <p>Copied 'n pasted</a></p>
-        <p><a href="http://modernperlbooks.com/books/modern_perl/">Modern Perl</a></p>
-        <p><a href="http://www.quora.com/Perl/What-is-modern-Perl">Quora</a></p>
-      </div>
 
     </div> <!-- /container -->
 
@@ -117,8 +119,5 @@ __DATA__
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-  </body>
+</body>
 </html>

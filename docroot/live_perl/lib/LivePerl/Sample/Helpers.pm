@@ -93,8 +93,8 @@ __DATA__
       </div>
 
       <div class="jumbotron">
-        <h1>Grab some Modern Perl today</h1>
-        <p class="lead">Modern Perl is one way to describe the way the world's most effective Perl 5 programmers work. They use language idioms. They take advantage of the CPAN. They show good taste and craft to write powerful, maintainable, scalable, concise, and effective code.</p>
+        <h1>Yay Perl!</h1>
+        <p class="lead">We ♥ Perl.</p>
       </div>
 
       <div class="row marketing">
@@ -103,18 +103,9 @@ __DATA__
         </div>
       </div>
 
-      <div class="footer">
-        <p>Copied 'n pasted</a></p>
-        <p><a href="http://modernperlbooks.com/books/modern_perl/">Modern Perl</a></p>
-        <p><a href="http://www.quora.com/Perl/What-is-modern-Perl">Quora</a></p>
-      </div>
-
     </div> <!-- /container -->
 
     <%= content %>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
   </body>
 </html>
