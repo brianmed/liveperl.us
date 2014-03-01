@@ -1,4 +1,5 @@
 live_perl.conf
+log
 /META.yml
 /MYMETA.*
 /blib/
