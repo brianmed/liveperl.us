@@ -2,7 +2,7 @@
 
 =head1 liveperl.us
 
-Real time tutorial for Mojollcious
+Real time tutorial for Mojolicious
 
 =head1 INSTALLATION
 
