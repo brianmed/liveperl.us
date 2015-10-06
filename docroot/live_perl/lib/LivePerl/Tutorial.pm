@@ -87,7 +87,7 @@ sub _docker {
         }
     };
 
-    my $html = $self->render(partial => 1, inline => '[% INCLUDE tutorial/go.html.tt %]', progress => 1);
+    my $html = $self->render_to_string(partial => 1, inline => '[% INCLUDE tutorial/go.html.tt %]', progress => 1);
     $self->stash->{_previous} = 1;
     $self->write_chunk($html => sub { 
         eval {
@@ -96,7 +96,7 @@ sub _docker {
         };
         if ($@) {
             $self->app->log->debug($@);
-            my $html = $self->render(partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => 1, error => $@);
+            my $html = $self->render_to_string(partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => 1, error => $@);
             $self->write_chunk($html => sub { $self->finish });
         }
     });
@@ -123,7 +123,7 @@ sub _section {
             spurt(encode("utf8", $code), "/tmp/playground-$unique/lite.pl");
         }
 
-        $output = $self->render(unique => $unique, port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => $self->stash->{_previous} // 0);
+        $output = $self->render_to_string(unique => $unique, port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => $self->stash->{_previous} // 0);
         $self->write_chunk($output => sub { $self->finish });
     };
 
