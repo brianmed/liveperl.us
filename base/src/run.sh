@@ -9,6 +9,6 @@ echo "session required pam_limits.so" >> /etc/pam.d/common-session
 echo "session required pam_limits.so" >> /etc/pam.d/common-session-noninteractive
 echo "ulimit -u 30" >> /etc/profile
 
-cd /src/Mojolicious-4.84; /usr/local/bin/perl Makefile.PL
-cd /src/Mojolicious-4.84; make
-cd /src/Mojolicious-4.84; make install
+cd /src/Mojolicious-6.22; /usr/local/bin/perl Makefile.PL
+cd /src/Mojolicious-6.22; make
+cd /src/Mojolicious-6.22; make install
