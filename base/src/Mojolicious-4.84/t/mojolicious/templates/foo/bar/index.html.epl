@@ -1,2 +1,0 @@
-% my $c = shift;
-Hello Mojo from the other template <%= $c->url_for %>!
