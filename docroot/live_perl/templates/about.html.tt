@@ -18,7 +18,7 @@
       <ul class="nav masthead-nav">
         <li>[% h.link_to('Home', '/') %]</li>
         <li>[% h.link_to('Tutorials', '/tutorials') %]</li>
-            <li>[% h.link_to('Pearls', 'http://pearls.liveperl.us') %]</li>
+        <li>[% h.link_to('Pearls', 'http://pearls.liveperl.us') %]</li>
         <li class="active">[% h.link_to('About', '/about') %]</li>
       </ul>
     </div>
@@ -48,7 +48,7 @@
         <dt>How many can run the tutorials at once?</dt>
         <dd>50.</dd>
         <dt>Which version of perl is running?</dt>
-        <dd>LivePerl is running Perl 5.16.3 and Mojolicious 4.84.</dd>
+        <dd>LivePerl is running Perl 5.20.3 and Mojolicious 6.22.</dd>
       </dl>
 
       <h2>Authors</h2>

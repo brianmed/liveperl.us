@@ -28,7 +28,7 @@
       <div class="inner cover">
         <h1 class="cover-heading">Enjoy your Perl experience.</h1>
         <p class="lead">
-          LivePerl allow you to try out [% h.link_to('perl', 'http://perl.org') %]
+          LivePerl allows you to try out [% h.link_to('perl', 'http://perl.org') %]
           directly in your browser.
         </p>
         <p class="lead">
