@@ -5,6 +5,9 @@ use File::Copy qw();
 use Mojo::Util qw(slurp spurt);
 use Mojo::JSON qw(j);
 use Encode qw(encode);
+use Data::UUID;
+use File::Path qw(make_path);
+use File::Copy qw(copy);
 
 sub _fortune {
     my $self = shift;
@@ -28,15 +31,25 @@ sub start {
     # Reload the browser
     if (!$code || $code !~ m/\w/) {
         if ($pearls) {
+            $self->app->log->debug("reload: $pearls");
             my ($unique) = $pearls =~ m#liveperl_(\d+)_pearls#;
             $code = slurp("/tmp/playground-$unique/code/lite.pl");
         }
     }
 
     if (!$pearls) {
-        $pearls = sprintf("liveperl_%013d_pearls", time . int(rand(1000)));
+        foreach (1 .. 100) {
+            $pearls = sprintf("liveperl_%13d_pearls", time . int(rand(1000)));
+
+            my ($unique) = $pearls =~ m#liveperl_(\d+)_pearls#;
+            last if !-d "/tmp/playground-$unique";
+        }
+
+        $self->app->log->debug("init: $pearls");
         $self->session(pearls => $pearls);
     }
+
+    $self->app->log->debug("start: $pearls");
 
     my ($unique) = $pearls =~ m#liveperl_(\d+)_pearls#;
 
@@ -53,7 +66,7 @@ sub start {
     }
 
     my $fortune = $self->_fortune;
-    my $clam = $self->url_for("/pearls/clam/$unique")->to_abs;
+    my $clam = $self->url_for("/pearls/clam")->to_abs;
     return($self->render("pearls/start", fortune => $fortune, unique => $unique, code => $code, clam => $clam));
 }
 
@@ -81,8 +94,6 @@ sub run {
     {
         local $/;
         $output = `/usr/bin/sudo /opt/liveperl.us/bin/docker_run.pl $pearls`; 
-        my $pod = `/opt/perl-5.16.3/bin/pod2text /tmp/playground-$unique/code/lite.pl`; 
-        $output = "$pod\n\n$output" if $pod && $pod =~ m/\w/;
     }
 
     spurt(j({ output => $output}), "/tmp/playground-$unique/json/output.json");
@@ -90,10 +101,12 @@ sub run {
     $self->render(json => { output => $output });
 }
 
-sub open {
+sub create {
     my $self = shift;
 
-    my ($unique) = $self->param("unique");
+    my $pearls = $self->session("pearls");
+
+    my ($unique) = $pearls =~ m#liveperl_(\d+)_pearls#;
 
     if (!$unique) {
         my $url = $self->url_for('/');
@@ -106,11 +119,52 @@ sub open {
         return($self->redirect_to($url));
     }
 
-    my $code = slurp("/tmp/playground-$unique/code/lite.pl");
+    my $dir = $self->clam_path($unique);
+
+    if (-d $dir) {
+        $self->flash(info => "Pearl was already Clammed");
+        my $url = $self->url_for('/');
+        return($self->redirect_to($url));
+    }
+
+    $self->app->log->debug("make_path: $dir");
+    make_path($dir);
+    make_path("$dir/code");
+    make_path("$dir/json");
+
+    copy("/tmp/playground-$unique/code/lite.pl", "$dir/code/lite.pl");
+    copy("/tmp/playground-$unique/json/output.json", "$dir/json/output.json");
+
+    my $clam = $self->url_for("/pearls/clam/$unique")->to_abs;
+    $self->flash(info => "Clam created<br><a style='color: blue;' href='$clam'>$clam</a>");
+
+    my $url = $self->url_for('/');
+    return($self->redirect_to($url));
+}
+
+sub open {
+    my $self = shift;
+
+    my ($unique) = $self->param("unique");
+
+    if (!$unique) {
+        my $url = $self->url_for('/');
+        return($self->redirect_to($url));
+    }
+
+    my $path = $self->clam_path($unique);
+
+    if (!-f "$path/code/lite.pl" || !-f "$path/json/output.json") {
+        $self->flash(info => "No code or output found.  Did you run first?");
+        my $url = $self->url_for('/');
+        return($self->redirect_to($url));
+    }
+
+    my $code = slurp("$path/code/lite.pl");
 
     my $fortune = $self->_fortune;
 
-    my $bytes = slurp("/tmp/playground-$unique/json/output.json");
+    my $bytes = slurp("$path/json/output.json");
     my $hash = j($bytes) // {};
     my $output = $hash->{output};
 
