@@ -24,7 +24,7 @@ foreach my $line (@output) {
 }
 
 my $port = 0;
-foreach my $nbr (8000 .. 8050) {
+foreach my $nbr (8000 .. 8030) {
     $port = $nbr if !$ports{$nbr};
     last if $port;
 }

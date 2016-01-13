@@ -1,2 +1,2 @@
-*/5     *       *       *       *  root /usr/bin/sudo /opt/liveperl.us/bin/docker_cull.pl 
-*/1     *       *       *       *  root /opt/liveperl.us/bin/docker_spork.sh
+*/5     *       *       *       *  /usr/bin/sudo /opt/liveperl.us/bin/docker_cull.pl 
+*/1     *       *       *       *  /usr/bin/sudo /opt/liveperl.us/bin/docker_spork.sh

@@ -1,4 +1,4 @@
 # cpanm --installdeps .
-requires 'Mojolicious::Plugin::AccessLog' => '0.004';
-requires 'Mojolicious::Plugin::TtRenderer' => '1.50';
+requires 'Mojolicious::Plugin::AccessLog' => '0';
+requires 'Mojolicious::Plugin::TtRenderer' => '0';
 

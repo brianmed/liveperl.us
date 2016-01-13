@@ -67,7 +67,7 @@ sub start {
 
     my $fortune = $self->_fortune;
     my $clam = $self->url_for("/pearls/clam")->to_abs;
-    return($self->render("pearls/start", fortune => $fortune, unique => $unique, code => $code, clam => $clam));
+    return($self->render("pearls/start", fortune => $fortune, unique => $unique, code => $code, clam => $clam, have_output => 1));
 }
 
 sub start_over {
@@ -113,8 +113,8 @@ sub create {
         return($self->redirect_to($url));
     }
 
-    if (!-f "/tmp/playground-$unique/code/lite.pl" || !-f "/tmp/playground-$unique/json/output.json") {
-        $self->flash(info => "No code or output found.  Did you run first?");
+    if (!-f "/tmp/playground-$unique/code/lite.pl") {
+        $self->flash(info => "No code found.  How odd?");
         my $url = $self->url_for('/');
         return($self->redirect_to($url));
     }
@@ -122,7 +122,8 @@ sub create {
     my $dir = $self->clam_path($unique);
 
     if (-d $dir) {
-        $self->flash(info => "Pearl was already Clammed");
+        my $clam = $self->url_for("/pearls/clam/$unique")->to_abs;
+        $self->flash(info => "Pearl was already Clammed<br><a style='color: blue;' href='$clam'>$clam</a>");
         my $url = $self->url_for('/');
         return($self->redirect_to($url));
     }
@@ -154,8 +155,8 @@ sub open {
 
     my $path = $self->clam_path($unique);
 
-    if (!-f "$path/code/lite.pl" || !-f "$path/json/output.json") {
-        $self->flash(info => "No code or output found.  Did you run first?");
+    if (!-f "$path/code/lite.pl") {
+        $self->flash(info => "No code found.  How odd.");
         my $url = $self->url_for('/');
         return($self->redirect_to($url));
     }
@@ -164,13 +165,40 @@ sub open {
 
     my $fortune = $self->_fortune;
 
-    my $bytes = slurp("$path/json/output.json");
-    my $hash = j($bytes) // {};
-    my $output = $hash->{output};
+    my $output;
+    if (-f "$path/json/output.json") {
+        my $bytes = slurp("$path/json/output.json");
+        my $hash = j($bytes) // {};
+        $output = $hash->{output};
+    }
 
-    delete($self->session->{pearls});
+    # delete($self->session->{pearls});
 
-    return($self->render("pearls/start", fortune => $fortune, unique => $unique, code => $code, from_clam => 1, output => $output));
+    my $raw = $self->url_for("/pearls/clam/$unique/raw")->to_abs;
+    return($self->render("pearls/start", fortune => $fortune, unique => $unique, code => $code, from_clam => 1, raw => "$raw", have_output => defined $output ? 1 : 0, output => $output // ""));
+}
+
+sub raw {
+    my $self = shift;
+
+    my ($unique) = $self->param("unique");
+
+    if (!$unique) {
+        my $url = $self->url_for('/');
+        return($self->redirect_to($url));
+    }
+
+    my $path = $self->clam_path($unique);
+
+    if (!-f "$path/code/lite.pl") {
+        $self->flash(info => "No code found.  How odd.");
+        my $url = $self->url_for('/');
+        return($self->redirect_to($url));
+    }
+
+    my $code = slurp("$path/code/lite.pl");
+
+    $self->render(text => $code, format => "txt");
 }
 
 sub autosave {

@@ -48,9 +48,10 @@ foreach my $container (@containers) {
 
 @containers = ();
 my @images = ();
-my @output = `/usr/bin/docker ps -a`;
+@output = `/usr/bin/docker ps -a`;
 foreach my $line (@output) {
-    if ($line =~ m#^(\S+)\s+(\S+)\s.*?Exit\s+\d+#) {
+    # if ($line =~ m#^(\S+)\s+(\S+)\s.*?Exit\s+\d+#) {
+    if ($line =~ m#^(\S+)\s+(\S+).*?Exited\s+\(\d+#) {
         push(@containers, $1);
         push(@images, $2);
     }
@@ -60,7 +61,7 @@ foreach my $container (@containers) {
     system("/usr/bin/docker", "rm", $container);
 }
 
-foreach my $image (@images) {
-    next if "0e58ca77c0e5" eq $image;   # our current base image
-    system("/usr/bin/docker", "rmi", $image);
-}
+### foreach my $image (@images) {
+###     next if "033868014e1a" eq $image;   # our current base image
+###     system("/usr/bin/docker", "rmi", $image);
+### }

@@ -30,6 +30,7 @@ sub startup {
     $r->get('/pearls/start_over')->over(headers => {Host => qr/pearls\.liveperl\.us/})->to(controller => "Pearls", action => "start_over");
     $r->get('/pearls/clam')->over(headers => {Host => qr/pearls\.liveperl\.us/})->to(controller => "Pearls", action => "create");
     $r->get('/pearls/clam/:unique')->over(headers => {Host => qr/pearls\.liveperl\.us/})->to(controller => "Pearls", action => "open");
+    $r->get('/pearls/clam/:unique/raw')->over(headers => {Host => qr/pearls\.liveperl\.us/})->to(controller => "Pearls", action => "raw");
     $r->post('/pearls/autosave')->over(headers => {Host => qr/pearls\.liveperl\.us/})->to(controller => "Pearls", action => "autosave");
 
     $r->get('/')->to(template => "tutorial/start");

@@ -46,7 +46,7 @@
         <dt>How long is the test server up and running?</dt>
         <dd>Ten minutes after your last edit.</dd>
         <dt>How many can run the tutorials at once?</dt>
-        <dd>50.</dd>
+        <dd>30.</dd>
         <dt>Which version of perl is running?</dt>
         <dd>LivePerl is running Perl 5.20.3 and Mojolicious 6.22.</dd>
       </dl>

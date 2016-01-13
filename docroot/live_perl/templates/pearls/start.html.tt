@@ -75,12 +75,14 @@
         <button id=save class="btn btn-mini">Saving</button>
         <a class="btn btn-mini" href="[% h.url_for('/pearls/start_over') %]">New</a>
         <button id=run class="btn btn-mini">Run</button>
-        <a class="btn btn-mini" href="[% clam %]">Clam</a>
+        <a class="btn btn-mini" href="[% clam %]">Share</a>
       [% ELSE %]
         <a class="btn btn-mini" href="[% h.url_for('/pearls/start_over') %]" target="_blank">New</a>
+        <a class="btn btn-mini" href="[% raw %]" target="_blank">Raw</a>
       [% END %]
       </div>
     </div>
+    [% IF have_output %]
     <div class="row-fluid">
       <div class="span6">
         <div id="code"></div>
@@ -93,6 +95,14 @@
       </div>
     </form>
   </div>
+  [% ELSE %]
+    <div class="row-fluid">
+      <div class="span12">
+        <div id="code"></div>
+      </div>
+    </form>
+  </div>
+  [% END %]
 </div>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
