@@ -42,13 +42,14 @@ has 'z' => (is => 'rw', isa => 'Int');
 sub output {
     my $self = shift;
 
-    say(sprintf("x: %d, y: %d: z: %z", $self->x, $self->y, $self->z));
+    say(sprintf("x: %d, y: %d: z: %d", 
+        $self->x, $self->y, $self->z));
 }
 
 after 'clear' => sub {
     my $self = shift;
     $self->z(0);
-}
+};
 
 ############################
 ############################
@@ -58,11 +59,12 @@ package main;
 use v5.20;
 use feature qw(say);
 
-my $point = Point->new(ssn => '123456789');
-my $point3d = Point3d->new(ssn => '123456789', username => "Bilbert");
+my $point = Point->new(x => 1, y => 2);
+my $point3d = Point3D->new(x => 1, y => 2, z => 3);
 
-foreach my $obj ($person, $user) {
-    say("ssn: ", $obj->ssn);
-    say("username: ", $obj->ssn) if $obj->can("username");
-    say("-==========-") unless $obj == $user;
+foreach my $obj ($point, $point3d) {
+    $obj->output;
+    $obj->clear;
+    $obj->output;
+    say("-==========-") unless $obj == $point3d;
 };

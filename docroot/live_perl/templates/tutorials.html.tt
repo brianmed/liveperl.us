@@ -49,7 +49,7 @@
         <li><a href="/tutorial/moosemethods">Methods</a></li>
         <li><a href="/tutorial/mooseattributes">Attributes</a></li>
         <li><a href="/tutorial/moosepolymorphism">Polymorphism</a></li>
-        <li><a href="/tutorial/moosepolyinheritance">Inheritance</a></li>
+        <li><a href="/tutorial/mooseinheritance">Inheritance</a></li>
     </div>
   </div>
   <div class="row footer">
