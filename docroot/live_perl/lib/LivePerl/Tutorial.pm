@@ -2,7 +2,7 @@ package LivePerl::Tutorial;
 
 use Mojo::Base 'Mojolicious::Controller';
 
-use Mojo::Util qw(spurt);
+use Mojo::Util qw(spurt slurp);
 use Mojo::JSON qw(j);
 
 use Encode qw(encode decode);
@@ -123,7 +123,17 @@ sub _section {
             spurt(encode("utf8", $code), "/tmp/playground-$unique/lite.pl");
         }
 
-        $output = $self->render_to_string(unique => $unique, port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => $self->stash->{_previous} // 0);
+        my $clam = $self->url_for("/pearls/clam")->to_abs;
+
+        my $path = "/tmp/playground-$unique";
+        my $_output = "Press Run for Fun";
+        if (-f "$path/json/output.json") {
+            my $bytes = slurp("$path/json/output.json");
+            my $hash = j($bytes) // {};
+            $_output = $hash->{output};
+        }
+
+        $output = $self->render_to_string(_output => $_output, unique => $unique, port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => $self->stash->{_previous} // 0);
         $self->write_chunk($output => sub { $self->finish });
     };
 
@@ -169,6 +179,26 @@ sub logs {
     return $self->render(json => { output => join("\n", @output) });
 }
 
+sub run {
+    my $self = shift;
+
+    my $repo = $self->session("repo");
+
+    return $self->render(json => { output => "No session data found" }) unless $repo;
+
+    my ($unique) = $repo =~ m#bpmedley_(\d+)#;
+
+    my $output;
+    {
+        local $/;
+        $output = `/usr/bin/sudo /opt/liveperl.us/bin/docker_run.pl $repo`; 
+    }
+
+    spurt(j({ output => $output}), "/tmp/playground-$unique/json/output.json");
+
+    $self->render(json => { output => $output });
+}
+
 sub autosave {
     my $self = shift;
 
@@ -180,9 +210,18 @@ sub autosave {
     my ($unique) = $repo =~ m#bpmedley_(\d+)#;
 
     $self->app->log->debug("autosave: repo: $repo: unique: $unique");
+    mkdir("/tmp/playground-$unique/json") unless -d "/tmp/playground-$unique/json";
     spurt(encode("UTF-8", $code), "/tmp/playground-$unique/lite.pl");
 
-    return $self->render(json => { ret => 1 });
+    my $path = "/tmp/playground-$unique";
+    my $_output = "Press Run for Fun";
+    if (-f "$path/json/output.json") {
+        my $bytes = slurp("$path/json/output.json");
+        my $hash = j($bytes) // {};
+        $_output = $hash->{output};
+    }
+
+    return $self->render(json => { ret => 1, output => $_output });
 }
 
 1;

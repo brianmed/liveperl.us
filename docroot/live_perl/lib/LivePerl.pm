@@ -38,7 +38,8 @@ sub startup {
     $r->get('/tutorials')->to(template => 'tutorials');
     $r->post('/tutorial/autosave')->to(controller => "Tutorial", action => "autosave");
     $r->get("/tutorial/logs")->to(controller => "Tutorial", action => "logs");
-    $r->any('/tutorial/:name')->to('tutorial#go');
+    $r->any('/tutorial/run')->to(controller => "Tutorial", action => "run");
+    $r->any('/tutorial/:name')->to(controller => "Tutorial", action => "go");
 
     $self->helper(docker => sub {
         my($c, @command) = @_;
