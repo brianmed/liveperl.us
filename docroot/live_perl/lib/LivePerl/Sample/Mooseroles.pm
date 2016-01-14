@@ -27,28 +27,11 @@ sub break {
 ############################
 ############################
 
-package Engine;
-
-use Moose;
-
-has 'type' => (
-    is  => 'ro',
-    isa => 'Str',
-);
-
-############################
-############################
-
 package Car;
 
 use Moose;
 
 with 'Breakable';
-
-has 'engine' => (
-    is  => 'ro',
-    isa => 'Engine',
-);
 
 ############################
 ############################
@@ -58,9 +41,7 @@ package main;
 use v5.20;
 use feature qw(say);
 
-my $car = Car->new(
-    engine => Engine->new(type => "XT-3333")
-);
+my $car = Car->new;
 
 say($car->is_broken ? 'Busted' : 'Still working');
 $car->break;
