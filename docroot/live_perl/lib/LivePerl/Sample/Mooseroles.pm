@@ -39,7 +39,6 @@ with 'Breakable';
 package main;
 
 use v5.20;
-use feature qw(say);
 
 my $car = Car->new;
 

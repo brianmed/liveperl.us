@@ -21,7 +21,7 @@
   <div class="masthead row-fluid">
     <div class="inner span12">
       <h3 class="masthead-brand">
-        LivePerl - Pearls
+        LivePerl - Pearls - Share code with frenemies
       </h3>
       <ul class="nav masthead-nav">
             <li>[% h.link_to('Home', 'http://liveperl.us') %]</li>

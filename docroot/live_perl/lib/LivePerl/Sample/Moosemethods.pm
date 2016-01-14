@@ -25,7 +25,6 @@ sub clear {  # A method
 package main;
 
 use v5.20;
-use feature qw(say);
 
 my $point = Point->new(x => 1, y => 2);
 

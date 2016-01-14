@@ -10,7 +10,7 @@ __DATA__
 package Point;
 use Moose;
 
-use feature qw(say);
+use v5.20;
 
 has 'x' => (is => 'rw', isa => 'Int');
 has 'y' => (is => 'rw', isa => 'Int');
@@ -33,7 +33,7 @@ sub clear {
 package Point3D;
 use Moose;
 
-use feature qw(say);
+use v5.20;
 
 extends 'Point';
 
@@ -57,7 +57,6 @@ after 'clear' => sub {
 package main;
 
 use v5.20;
-use feature qw(say);
 
 my $point = Point->new(x => 1, y => 2);
 my $point3d = Point3D->new(x => 1, y => 2, z => 3);

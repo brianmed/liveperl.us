@@ -16,7 +16,7 @@ __DATA__
 package Person;
 use Moose;
 
-use feature qw(say);
+use v5.20;
 
 sub speak {
     say("I am human");
@@ -27,7 +27,7 @@ sub speak {
 
 package User;
 
-use feature qw(say);
+use v5.20;
 
 use Moose;
 extends 'Person';
@@ -42,7 +42,6 @@ sub speak {
 package main;
 
 use v5.20;
-use feature qw(say);
 
 my $person = Person->new;
 my $user = User->new;

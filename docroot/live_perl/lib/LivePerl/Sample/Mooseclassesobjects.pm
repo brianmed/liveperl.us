@@ -19,7 +19,6 @@ has 'y' => (is => 'rw', isa => 'Int');
 package main;
 
 use v5.20;
-use feature qw(say);
 
 my $point = Point->new(x => 1, y => 2);  # $point is the Object
 

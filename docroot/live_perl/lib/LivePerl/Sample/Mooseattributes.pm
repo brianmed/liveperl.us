@@ -26,7 +26,6 @@ has 'ssn' => (
 package main;
 
 use v5.20;
-use feature qw(say);
 
 my $person = Person->new();
 printIt(__LINE__, $person->has_ssn);
