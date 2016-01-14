@@ -81,7 +81,6 @@
             <a class="btn btn-mini" href="[% c.sample.doc_url() %]" target="_blank">Help</a>
         [% ELSE %]
             <button id=run class="btn btn-mini">Run</button>
-            <a class="btn btn-mini" href="[% clam %]">Share</a>
             <button id=save class="btn btn-mini" type="submit">Saving</button>
             <button class="btn btn-mini btn-lg" id="btnLogs" >Logs</button>
             <a class="btn btn-mini" href="[% h.url_for('/').to_abs().port(port || 80) %]" target="_blank">Open</a>

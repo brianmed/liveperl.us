@@ -45,11 +45,14 @@
         <li><a href="/tutorial/websockets">WebSockets</a></li>
       </ul>
       <h2>Moose</h2>
+      <ul>
         <li><a href="/tutorial/mooseclassesobjects">Classes and Objects</a></li>
         <li><a href="/tutorial/moosemethods">Methods</a></li>
         <li><a href="/tutorial/mooseattributes">Attributes</a></li>
         <li><a href="/tutorial/moosepolymorphism">Polymorphism</a></li>
         <li><a href="/tutorial/mooseinheritance">Inheritance</a></li>
+        <li><a href="/tutorial/mooseroles">Roles</a></li>
+      </ul>
     </div>
   </div>
   <div class="row footer">
