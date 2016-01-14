@@ -77,7 +77,8 @@
         [% IF (c.sample.title().match("Moose")) %]
             <button id=save class="btn btn-mini">Saving</button>
             <button id=run class="btn btn-mini">Run</button>
-            <a class="btn btn-mini" href="[% clam %]">Share</a>
+            <a class="btn btn-mini" href="[% clam %]" target="_blank">Share</a>
+            <a class="btn btn-mini" href="[% c.sample.doc_url() %]" target="_blank">Help</a>
         [% ELSE %]
             <button id=run class="btn btn-mini">Run</button>
             <a class="btn btn-mini" href="[% clam %]">Share</a>

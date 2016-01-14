@@ -40,6 +40,7 @@ sub startup {
     $r->get("/tutorial/logs")->to(controller => "Tutorial", action => "logs");
     $r->any('/tutorial/run')->to(controller => "Tutorial", action => "run");
     $r->any('/tutorial/:name')->to(controller => "Tutorial", action => "go");
+    $r->get('/pearls/clam')->to(controller => "Tutorial", action => "clam");
 
     $self->helper(docker => sub {
         my($c, @command) = @_;

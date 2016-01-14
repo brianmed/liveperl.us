@@ -2,6 +2,8 @@ package LivePerl::Tutorial;
 
 use Mojo::Base 'Mojolicious::Controller';
 
+use File::Path qw(make_path);
+use File::Copy qw(copy);
 use Mojo::Util qw(spurt slurp);
 use Mojo::JSON qw(j);
 
@@ -133,7 +135,7 @@ sub _section {
             $_output = $hash->{output};
         }
 
-        $output = $self->render_to_string(_output => $_output, unique => $unique, port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => $self->stash->{_previous} // 0);
+        $output = $self->render_to_string(clam => $clam, _output => $_output, unique => $unique, port => $port, partial => 1, progress => 0, inline => '[% INCLUDE tutorial/go.html.tt %]', previous => $self->stash->{_previous} // 0);
         $self->write_chunk($output => sub { $self->finish });
     };
 
@@ -222,6 +224,53 @@ sub autosave {
     }
 
     return $self->render(json => { ret => 1, output => $_output });
+}
+
+sub clam {
+    my $self = shift;
+
+    my $repo = $self->session("repo");
+
+    my ($unique) = $repo =~ m#bpmedley_(\d+)#;
+
+    my $url = $self->url_for('http://pearls.liveperl.us/');
+
+    if (!$unique) {
+        $self->flash(info => "No session found.");
+        $self->app->log->debug(__LINE__ . " " . $self->flash("info"));
+        return($self->redirect_to($url));
+    }
+
+    if (!-f "/tmp/playground-$unique/lite.pl") {
+        $self->flash(info => "No code found.  How odd?");
+        $self->app->log->debug(__LINE__ . "$unique: ". $self->flash("info"));
+        return($self->redirect_to($url));
+    }
+
+    my $dir = $self->clam_path($unique);
+
+    if (-d $dir) {
+        my $clam = $self->url_for("http://pearls.liveperl.us/pearls/clam/$unique")->to_abs;
+        $self->flash(info => "Pearl was already Clammed<br><a style='color: blue;' href='$clam'>$clam</a>");
+        $self->app->log->debug(__LINE__ . " " . $self->flash("info"));
+        $url = $self->url_for($clam);
+        return($self->redirect_to($url));
+    }
+
+    $self->app->log->debug("make_path: $dir");
+    make_path($dir);
+    make_path("$dir/code");
+    make_path("$dir/json");
+
+    copy("/tmp/playground-$unique/lite.pl", "$dir/code/lite.pl");
+    copy("/tmp/playground-$unique/json/output.json", "$dir/json/output.json");
+
+    my $clam = $self->url_for("http://pearls.liveperl.us/pearls/clam/$unique")->to_abs;
+    $self->flash(info => "Clam created<br><a style='color: blue;' href='$clam'>$clam</a>");
+
+    $self->app->log->debug(__LINE__ . " " . $self->flash("info"));
+    $url = $self->url_for($clam);
+    return($self->redirect_to($url));
 }
 
 1;
